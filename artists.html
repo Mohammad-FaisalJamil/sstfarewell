@@ -1,69 +1,297 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Artists | SST Farewell</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Artists &amp; Performers | SST Farewell</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+    darkMode: "class",
+    theme: {
+        extend: {
             colors: {
-              "surface-container-lowest": "#000000",
-              primary: "#C9A84C",
-              secondary: "#8B0000",
-              tertiary: "#2D0909",
-              background: "#000000",
-              "on-background": "#FFFFFF",
-              surface: "#000000",
-              "on-surface": "#FFFFFF",
-              outline: "#C9A84C",
-              "primary-container": "#C9A84C",
-              "on-primary-container": "#000000"
+                primary: "#C9A84C",
+                secondary: "#8B0000",
+                tertiary: "#2D0909",
+                background: "#000000",
+                surface: "#0D0D08",
+                "on-surface": "#FFFFFF"
             },
-            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
-            spacing: { gutter: "24px", "margin-desktop": "64px", unit: "8px", "margin-mobile": "20px", "container-max": "1280px" },
-            fontFamily: { "headline-xl": ["Playfair Display"], "body-lg": ["Hanken Grotesk"], "body-md": ["Hanken Grotesk"], "headline-lg": ["Playfair Display"], "headline-md": ["Playfair Display"], "label-md": ["Hanken Grotesk"] }
-          }
+            spacing: {
+                gutter: "24px",
+                "container-max": "1280px"
+            },
+            fontFamily: {
+                "headline-xl": ["Playfair Display"],
+                "headline-lg": ["Playfair Display"],
+                "headline-md": ["Playfair Display"],
+                "body-md": ["Hanken Grotesk"],
+                "label-md": ["Hanken Grotesk"]
+            }
         }
-      }
-    </script>
-    <style>
-      body { background-color: #000000; color: #FFFFFF; overflow-x: hidden; }
-      .glass-card { background: rgba(45, 9, 9, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(201, 168, 76, 0.3); }
-      .text-glow-gold { text-shadow: 0 0 10px rgba(201, 168, 76, 0.6); }
-      .artist-card:hover { transform: translateY(-4px); box-shadow: 0 0 25px rgba(201, 168, 76, 0.16); }
-    </style>
-  </head>
-  <body class="font-body-md text-white">
-    <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20">
-      <div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
-        <div class="flex items-center gap-3"><img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/><span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span></div>
-        <div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80"><a class="hover:text-primary transition-colors" href="index.html">Home</a><a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event</a><a class="text-primary border-b-2 border-primary pb-1" href="artists.html">Artists</a><a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a><a class="hover:text-primary transition-colors" href="status.html">Status</a></div>
-        <a href="tickets.html" class="hidden md:block bg-primary text-black px-6 py-2 rounded-full font-label-md uppercase tracking-wider hover:bg-white transition-all">Buy Tickets</a>
-      </div>
-    </nav>
+    }
+}
+</script>
+<style>
+    body {
+        background: #050503;
+        color: #fff;
+        overflow-x: hidden;
+    }
+    .glass-card {
+        background: rgba(45, 9, 9, 0.74);
+        border: 1px solid rgba(201, 168, 76, 0.34);
+        backdrop-filter: blur(18px);
+    }
+    .text-glow-gold {
+        text-shadow: 0 0 14px rgba(201, 168, 76, 0.7);
+    }
+    .glow-gold {
+        box-shadow: 0 0 32px rgba(201, 168, 76, 0.22);
+    }
+    .artist-image {
+        transition: transform 0.6s ease, filter 0.6s ease;
+    }
+    .group:hover .artist-image {
+        transform: scale(1.08);
+        filter: brightness(1.12) contrast(1.06);
+    }
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .star-float {
+        animation: starFloat 5s ease-in-out infinite;
+    }
+    @keyframes starFloat {
+        0%, 100% { transform: translateY(0); opacity: .78; }
+        50% { transform: translateY(-8px); opacity: 1; }
+    }
+    .gold-haze::before {
+        content: "";
+        position: absolute;
+        inset: -20%;
+        background:
+            radial-gradient(circle at 22% 20%, rgba(201,168,76,.18), transparent 28%),
+            radial-gradient(circle at 78% 35%, rgba(139,0,0,.28), transparent 26%),
+            linear-gradient(180deg, rgba(201,168,76,.04), transparent 38%);
+        pointer-events: none;
+    }
+    
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .artist-image {
+            transform: scale(1);
+        }
+        .group:hover .artist-image {
+            transform: scale(1.05);
+        }
+    }
+    .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity .75s ease, transform .75s ease;
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Enhanced animations */
+    @keyframes fadeInScale {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    .fade-in-scale {
+        animation: fadeInScale 0.6s ease-out forwards;
+    }
+    
+    /* Mobile menu styles */
+    #mobile-menu.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+</style>
+<script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+            });
+            
+            // Close menu when clicking on a link
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+        }
+        
+        // Performance: Lazy load images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    });
+</script>
+</head>
+<body class="font-body-md text-white">
+<nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20">
+<div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+<span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span>
+</div>
+<div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80">
+<a class="hover:text-primary transition-colors" href="index.html#home">Home</a>
+<a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event</a>
+<a class="text-primary border-b-2 border-primary pb-1" href="artists.html">Artists</a>
+<a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a>
+<a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a>
+</div>
+<div class="hidden md:block">
+<a href="tickets.html" class="bg-primary text-black px-6 py-2 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200">
+            Buy Tickets
+</a>
+</div>
+<!-- Mobile Menu Button -->
+<button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none hover:text-white transition-colors duration-300">
+    <span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</div>
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="fixed inset-x-0 top-[73px] z-40 bg-black/95 backdrop-blur-xl border-b border-primary/10 flex flex-col items-center justify-start py-8 gap-6 font-label-md uppercase tracking-widest text-white/80 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+    <a class="hover:text-primary transition-colors text-base" href="index.html#home">Home</a>
+    <a class="hover:text-primary transition-colors text-base" href="schedule.html#schedule">Event</a>
+    <a class="hover:text-primary transition-colors text-base" href="artists.html">Artists</a>
+    <a class="hover:text-primary transition-colors text-base" href="gallery.html">Gallery</a>
+    <a class="hover:text-primary transition-colors text-base" href="tickets.html">Tickets</a>
+    <a href="tickets.html" class="bg-primary text-black px-8 py-3 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200 mt-2">Buy Tickets</a>
+</div>
+</nav>
 
-    <main class="max-w-container-max mx-auto px-gutter pt-32 pb-20">
-      <section class="text-center mb-12">
-        <p class="text-primary uppercase tracking-[0.3em] mb-4">Artists</p>
-        <h1 class="font-headline-xl text-white text-glow-gold mb-4">Meet the performers</h1>
-        <p class="text-white/70 max-w-2xl mx-auto">The lineup will bring together music, energy, and celebration for one unforgettable farewell experience.</p>
-      </section>
-      <section class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        <div class="artist-card glass-card p-8 rounded-3xl border border-primary/20 transition-all duration-300"><div class="text-primary text-4xl mb-4">🎧</div><h3 class="font-headline-md text-white text-2xl mb-3">DJ</h3><p class="text-white/70">High-energy sets that will keep the night alive from start to finish.</p></div>
-        <div class="artist-card glass-card p-8 rounded-3xl border border-primary/20 transition-all duration-300"><div class="text-primary text-4xl mb-4">🦍</div><h3 class="font-headline-md text-white text-2xl mb-3">Gorilla</h3><p class="text-white/70">A bold live act that brings unmatched stage presence and excitement.</p></div>
-        <div class="artist-card glass-card p-8 rounded-3xl border border-primary/20 transition-all duration-300"><div class="text-primary text-4xl mb-4">🎤</div><h3 class="font-headline-md text-white text-2xl mb-3">Jammer 1</h3><p class="text-white/70">A powerful performance designed to make the evening unforgettable.</p></div>
-        <div class="artist-card glass-card p-8 rounded-3xl border border-primary/20 transition-all duration-300"><div class="text-primary text-4xl mb-4">🎶</div><h3 class="font-headline-md text-white text-2xl mb-3">Jammer 2</h3><p class="text-white/70">Dynamic and soulful energy that complements the whole night.</p></div>
-        <div class="artist-card glass-card p-8 rounded-3xl border border-primary/20 transition-all duration-300"><div class="text-primary text-4xl mb-4">🎼</div><h3 class="font-headline-md text-white text-2xl mb-3">Qawal</h3><p class="text-white/70">A touching performance that adds elegance and emotion to the celebration.</p></div>
-        <div class="artist-card glass-card p-8 rounded-3xl border border-primary/20 transition-all duration-300"><div class="text-primary text-4xl mb-4">✨</div><h3 class="font-headline-md text-white text-2xl mb-3">Special Guests</h3><p class="text-white/70">More surprises will be revealed as the event date approaches.</p></div>
-      </section>
-    </main>
+<main>
+<section class="relative gold-haze pt-36 md:pt-44 pb-16 px-gutter text-center overflow-hidden">
+<div class="relative z-10 max-w-container-max mx-auto">
+<div class="inline-flex items-center gap-2 mb-4 text-primary">
+<span class="material-symbols-outlined star-float text-lg" style="font-variation-settings:'FILL' 1;">star</span>
+<span class="font-label-md uppercase tracking-[0.28em] text-xs md:text-sm">A Night of Elegance</span>
+<span class="material-symbols-outlined star-float text-lg" style="font-variation-settings:'FILL' 1; animation-delay:1.2s;">star</span>
+</div>
+<h1 class="font-headline-xl text-primary text-glow-gold text-5xl md:text-7xl leading-tight mb-6">The Performers</h1>
+<p class="text-white/75 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">An unforgettable lineup of live music, qawwali, and high-energy performances curated for the graduating classes of F2022 and S2023.</p>
+</div>
+</section>
 
-    <footer class="bg-black border-t border-primary/20 pt-12 pb-8 px-gutter"><div class="max-w-container-max mx-auto text-center text-white/50 text-sm">© 2026 SST Farewell — UMT Lahore</div></footer>
-  </body>
+<section class="px-gutter pb-24">
+<div class="max-w-container-max mx-auto glass-card p-16 rounded-2xl text-center border border-primary/20">
+<div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+<span class="material-symbols-outlined text-primary text-5xl">music_note</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-4">Artists Revealing Soon</h2>
+<p class="font-body-lg text-body-lg text-on-surface/70 max-w-xl mx-auto mb-8">We're curating an exceptional lineup for the SST Farewell. Artists will be revealed one by one as we approach the event date.</p>
+<div class="mt-8 flex flex-wrap justify-center gap-4">
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Jamming Artist 1</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Jamming Artist 2</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Qawwal</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">DJ</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Mascot</span>
+</div>
+</div>
+</section>
+
+<section class="px-gutter pb-28" id="tickets">
+<div class="max-w-container-max mx-auto glass-card glow-gold rounded-3xl p-10 md:p-20 text-center">
+<h2 class="font-headline-xl text-primary text-glow-gold text-4xl md:text-6xl mb-6">Get Your Ticket to See Them Live</h2>
+<p class="text-white/70 max-w-xl mx-auto mb-8">Limited VIP and standard tickets remain for F2022 and S2023. Do not miss the finale.</p>
+<a href="tickets.html" class="inline-flex bg-primary text-black px-10 py-4 rounded-full font-label-md uppercase tracking-widest hover:bg-white hover:scale-105 transition-all">Buy Tickets Now</a>
+</div>
+</section>
+</main>
+
+<footer class="bg-black border-t border-primary/20 pt-20 pb-12 px-gutter">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+<div class="md:col-span-1">
+<div class="flex items-center gap-3 mb-6">
+<img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+<span class="font-headline-sm text-primary font-bold">SST Farewell</span>
+</div>
+<p class="text-white/60 mb-6">The definitive final celebration for the SST graduating classes of Fall 2022 and Spring 2023.</p>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Quick Links</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="index.html#home">Home</a></li>
+<li><a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event Schedule</a></li>
+<li><a class="hover:text-primary transition-colors" href="artists.html">Artists</a></li>
+<li><a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a></li>
+<li><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Event Info</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm">location_on</span>
+<span>UMT Lahore Campus, Lahore</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+<span>July 17th &amp; 18th, 2026</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Contact</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="tel:+923228423598">0322-8423598</a></li>
+<li><a class="hover:text-primary transition-colors" href="mailto:sst.pc@umt.edu.pk">sst.pc@umt.edu.pk</a></li>
+<li><a class="hover:text-primary transition-colors" href="https://www.instagram.com/sst_pc" target="_blank" rel="noreferrer">@sst_pc</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-white/40 text-xs">© 2026 SST Farewell — UMT Lahore. Batches F2022 &amp; S2023.</p>
+<p class="text-white/40 text-xs">If you are facing any kind of issue, contact to President: 03228423598</p>
+</div>
+</footer>
+<script>
+const revealArtists = () => {
+    document.querySelectorAll('.reveal').forEach((el) => {
+        if (el.getBoundingClientRect().top < window.innerHeight - 120) {
+            el.classList.add('active');
+        }
+    });
+};
+window.addEventListener('load', revealArtists);
+window.addEventListener('scroll', revealArtists);
+</script>
+</body>
 </html>

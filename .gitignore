@@ -1,12 +1,27 @@
-# Ignore local secret files and environment overrides
-firebase-config.js
+# Environment variables
 .env
 .env.local
 .env.*.local
 
-# Ignore OS files
-.DS_Store
-Thumbs.db
-
-# Ignore node modules if you ever add Node tooling
+# Node modules
 node_modules/
+
+# Build outputs
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies
+package-lock.json
+yarn.lock

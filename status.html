@@ -1,23 +1,415 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-  <head>
+<head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Status | SST Farewell</title>
+    <title>SST Farewell - Check Status</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <style>body{background:#000;color:#fff;overflow-x:hidden}.glass-card{background:rgba(45,9,9,0.6);backdrop-filter:blur(20px);border:1px solid rgba(201,168,76,0.3)}</style>
-  </head>
-  <body>
-    <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20"><div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto"><div class="flex items-center gap-3"><img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/><span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span></div><div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80"><a class="hover:text-primary transition-colors" href="index.html">Home</a><a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event</a><a class="hover:text-primary transition-colors" href="artists.html">Artists</a><a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a><a class="text-primary border-b-2 border-primary pb-1" href="status.html">Status</a></div></div></nav>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#C9A84C",
+                        "secondary": "#8B0000",
+                        "tertiary": "#2D0909",
+                        "background": "#000000",
+                        "on-background": "#FFFFFF",
+                        "surface": "#000000",
+                        "on-surface": "#FFFFFF",
+                        "outline": "#C9A84C",
+                        "surface-container-high": "#1c1c1c",
+                        "surface-container-low": "#111111",
+                        "on-surface-variant": "#e3beb8",
+                        "primary-container": "#8B0000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Playfair Display"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-sm": ["Playfair Display"],
+                        "label-md": ["Hanken Grotesk"],
+                        "label-lg": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "label-lg": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2d9;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(201, 168, 76, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        .input-dark {
+            background-color: #000000 !important;
+            border-color: rgba(201, 168, 76, 0.2) !important;
+            color: #e5e2d9 !important;
+        }
+        .input-dark:focus {
+            border-color: #C9A84C !important;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.2);
+        }
+        .status-pending {
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+        .status-approved {
+            background: rgba(0, 204, 0, 0.1);
+            border: 1px solid rgba(0, 204, 0, 0.3);
+        }
+        .status-rejected {
+            background: rgba(204, 0, 0, 0.1);
+            border: 1px solid rgba(204, 0, 0, 0.3);
+        }
+        .status-not-found {
+            background: rgba(128, 128, 128, 0.1);
+            border: 1px solid rgba(128, 128, 128, 0.3);
+        }
+    </style>
+</head>
+<body class="font-body-md overflow-x-hidden">
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20">
+        <div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+            <div class="flex items-center gap-3">
+                <img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+                <span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80">
+                <a class="hover:text-primary transition-colors" href="index.html#home">Home</a>
+                <a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event</a>
+                <a class="hover:text-primary transition-colors" href="artists.html">Artists</a>
+                <a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a>
+                <a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a>
+                <a class="text-primary border-b-2 border-primary pb-1" href="status.html">Status</a>
+            </div>
+            <div class="hidden md:block">
+                <a href="tickets.html" class="bg-primary text-black px-6 py-2 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200">
+                    Buy Tickets
+                </a>
+            </div>
+        </div>
+    </nav>
 
-    <main class="max-w-container-max mx-auto px-gutter pt-32 pb-20">
-      <section class="glass-card p-10 rounded-3xl border border-primary/20 text-center">
-        <p class="text-primary uppercase tracking-[0.3em] mb-4">Status</p>
-        <h1 class="font-headline-xl text-white mb-4">Registration status is handled privately</h1>
-        <p class="text-white/70 max-w-2xl mx-auto">This public frontend only displays a safe message. Any database-backed lookup or booking logic is kept in a private backend and never exposed in GitHub.</p>
-      </section>
+    <!-- Main Content -->
+    <main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative min-h-screen">
+        <div class="max-w-2xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="font-headline-lg text-headline-lg text-primary mb-6">Check Registration Status</h1>
+                <p class="font-body-lg text-on-surface/70">Enter your University ID to check your registration status</p>
+            </div>
+
+            <!-- Search Form -->
+            <div class="glass-card p-8 rounded-2xl mb-8">
+                <form onsubmit="checkStatus(event)">
+                    <div class="space-y-4">
+                        <label class="font-label-md text-label-md text-on-surface">University ID *</label>
+                        <input 
+                            id="studentId" 
+                            type="text" 
+                            required 
+                            class="w-full px-4 py-3 rounded-lg input-dark border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" 
+                            placeholder="Enter your University ID (e.g., F2022-123)"
+                        />
+                        <p class="text-xs text-on-surface/50">Enter the same University ID you used for registration</p>
+                    </div>
+                    <button type="submit" class="w-full mt-6 py-4 bg-primary text-on-primary font-label-lg rounded-full hover:bg-white transition-all">
+                        Check Status
+                    </button>
+                </form>
+            </div>
+
+            <!-- Status Result -->
+            <div id="statusResult" class="hidden">
+                <!-- Status will be displayed here -->
+            </div>
+        </div>
     </main>
 
-    <footer class="bg-black border-t border-primary/20 pt-12 pb-8 px-gutter"><div class="max-w-container-max mx-auto text-center text-white/50 text-sm">© 2026 SST Farewell — UMT Lahore</div></footer>
-  </body>
+    <!-- Footer -->
+    <footer class="bg-black border-t border-primary/20 pt-20 pb-12 px-gutter">
+        <div class="max-w-container-max mx-auto pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-white/40 text-xs">© 2026 SST Farewell — UMT Lahore. Batches F2022 &amp; S2023.</p>
+            <p class="text-white/40 text-xs">If you are facing any kind of issue, contact to President: 03228423598</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Import database modules
+        import { initializeFirebase, checkRegistrationStatus } from "./db/firebaseDB.js";
+        import { STATUS_TYPES } from "./config/constants.js";
+        
+        // Initialize Firebase on page load
+        await initializeFirebase();
+        
+        // Make global for backward compatibility
+        window.checkStatus = async function(event) {
+            event.preventDefault();
+            
+            const studentId = document.getElementById('studentId').value.trim().toUpperCase();
+            const statusResult = document.getElementById('statusResult');
+            
+            if (!studentId) {
+                alert('Please enter your University ID');
+                return;
+            }
+
+            if (statusResult) {
+                statusResult.classList.remove('hidden');
+                statusResult.innerHTML = '<div class="text-center py-8"><p class="text-primary">Checking status...</p></div>';
+            }
+
+            try {
+                const foundRegistration = await checkRegistrationStatus(studentId);
+                
+                if (foundRegistration) {
+                    showStatus(foundRegistration.status, foundRegistration);
+                } else {
+                    showStatus(STATUS_TYPES.NOT_FOUND, null);
+                }
+            } catch (error) {
+                console.error('Error checking status:', error);
+                if (statusResult) {
+                    statusResult.innerHTML = `
+                        <div class="glass-card p-8 rounded-2xl status-not-found">
+                            <div class="text-center">
+                                <span class="material-symbols-outlined text-5xl text-gray-400 mb-4">error</span>
+                                <h3 class="font-headline-md text-xl text-gray-400 mb-2">Error Checking Status</h3>
+                                <p class="font-body-md text-on-surface/70">Unable to check status. Please try again later.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        };
+    </script>
+    <script>
+        // Status check function - delegated to module
+        // checkStatus is defined in the module script above
+
+        function showStatus(status, registration) {
+            const statusResult = document.getElementById('statusResult');
+            
+            let statusHTML = '';
+            
+            if (status === 'not-found') {
+                statusHTML = `
+                    <div class="glass-card p-8 rounded-2xl status-not-found">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-5xl text-gray-400 mb-4">search_off</span>
+                            <h3 class="font-headline-md text-xl text-gray-400 mb-2">No Registration Found</h3>
+                            <p class="font-body-md text-on-surface/70 mb-4">No registration found with this University ID.</p>
+                            <a href="tickets.html" class="inline-block px-6 py-3 bg-primary text-black rounded-full font-label-md uppercase tracking-wider hover:bg-white transition-all">
+                                Register Now
+                            </a>
+                        </div>
+                    </div>
+                `;
+            } else if (status === 'pending') {
+                const primaryAttendee = registration.attendees && registration.attendees.length > 0 ? registration.attendees[0] : {};
+                const attendeeCount = registration.attendees ? registration.attendees.length : 1;
+                
+                let attendeesHTML = '';
+                if (attendeeCount > 1) {
+                    attendeesHTML = `
+                        <div class="text-sm text-primary mb-4 mt-6">All Attendees in this Registration (${attendeeCount}):</div>
+                        ${registration.attendees.map((attendee, index) => `
+                            <div class="mb-3 p-3 bg-black/40 rounded border border-primary/10">
+                                <div class="font-medium text-sm mb-1">${index + 1}. ${attendee.name || 'N/A'}</div>
+                                <div class="text-xs text-on-surface/70">
+                                    Roll: ${attendee.studentId || 'N/A'} | 
+                                    Batch: ${attendee.batch || 'N/A'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                }
+                
+                statusHTML = `
+                    <div class="glass-card p-8 rounded-2xl status-pending">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-5xl text-primary mb-4">pending</span>
+                            <h3 class="font-headline-md text-xl text-primary mb-2">Pending Approval</h3>
+                            <p class="font-body-md text-on-surface/70 mb-6">Your registration is awaiting admin approval.</p>
+                            
+                            <div class="bg-black/40 p-6 rounded-xl border border-primary/20 mb-6 text-left">
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <p class="text-primary text-xs uppercase tracking-wider mb-1">Registration ID</p>
+                                        <p class="font-label-md">${registration.id || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-primary text-xs uppercase tracking-wider mb-1">Name</p>
+                                        <p class="font-label-md">${primaryAttendee.name || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-primary text-xs uppercase tracking-wider mb-1">Batch</p>
+                                        <p class="font-label-md">${primaryAttendee.batch || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-primary text-xs uppercase tracking-wider mb-1">Amount</p>
+                                        <p class="font-label-md">PKR ${(registration.amount || 0).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                                ${attendeesHTML}
+                            </div>
+                            
+                            <p class="text-on-surface/60 text-sm">Please check your email for updates. The approval process typically takes 24-48 hours.</p>
+                        </div>
+                    </div>
+                `;
+            } else if (status === 'approved') {
+                const primaryAttendee = registration.attendees && registration.attendees.length > 0 ? registration.attendees[0] : {};
+                const attendeeCount = registration.attendees ? registration.attendees.length : 1;
+                
+                let attendeesHTML = '';
+                if (attendeeCount > 1) {
+                    attendeesHTML = `
+                        <div class="text-sm text-green-500 mb-4 mt-6">All Attendees in this Registration (${attendeeCount}):</div>
+                        ${registration.attendees.map((attendee, index) => `
+                            <div class="mb-3 p-3 bg-black/40 rounded border border-green-500/10">
+                                <div class="font-medium text-sm mb-1 text-green-400">${index + 1}. ${attendee.name || 'N/A'}</div>
+                                <div class="text-xs text-on-surface/70">
+                                    Roll: ${attendee.studentId || 'N/A'} | 
+                                    Batch: ${attendee.batch || 'N/A'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                }
+                
+                statusHTML = `
+                    <div class="glass-card p-8 rounded-2xl status-approved">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-5xl text-green-500 mb-4">check_circle</span>
+                            <h3 class="font-headline-md text-xl text-green-500 mb-2">Registration Approved!</h3>
+                            <p class="font-body-md text-on-surface/70 mb-6">Your registration has been approved. Your tickets have been sent to your email.</p>
+                            
+                            <div class="bg-black/40 p-6 rounded-xl border border-green-500/20 mb-6 text-left">
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <p class="text-green-500 text-xs uppercase tracking-wider mb-1">Registration ID</p>
+                                        <p class="font-label-md">${registration.id || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-green-500 text-xs uppercase tracking-wider mb-1">Name</p>
+                                        <p class="font-label-md">${primaryAttendee.name || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-green-500 text-xs uppercase tracking-wider mb-1">Batch</p>
+                                        <p class="font-label-md">${primaryAttendee.batch || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-green-500 text-xs uppercase tracking-wider mb-1">Amount</p>
+                                        <p class="font-label-md">PKR ${(registration.amount || 0).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                                ${attendeesHTML}
+                            </div>
+                            
+                            <p class="text-on-surface/60 text-sm">Please check your email (${primaryAttendee.email || 'N/A'}) for your tickets and entry pass.</p>
+                        </div>
+                    </div>
+                `;
+            } else if (status === 'rejected') {
+                const primaryAttendee = registration.attendees && registration.attendees.length > 0 ? registration.attendees[0] : {};
+                const attendeeCount = registration.attendees ? registration.attendees.length : 1;
+                
+                let attendeesHTML = '';
+                if (attendeeCount > 1) {
+                    attendeesHTML = `
+                        <div class="text-sm text-red-500 mb-4 mt-6">All Attendees in this Registration (${attendeeCount}):</div>
+                        ${registration.attendees.map((attendee, index) => `
+                            <div class="mb-3 p-3 bg-black/40 rounded border border-red-500/10">
+                                <div class="font-medium text-sm mb-1 text-red-400">${index + 1}. ${attendee.name || 'N/A'}</div>
+                                <div class="text-xs text-on-surface/70">
+                                    Roll: ${attendee.studentId || 'N/A'} | 
+                                    Batch: ${attendee.batch || 'N/A'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                }
+                
+                statusHTML = `
+                    <div class="glass-card p-8 rounded-2xl status-rejected">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-5xl text-red-500 mb-4">cancel</span>
+                            <h3 class="font-headline-md text-xl text-red-500 mb-2">Registration Rejected</h3>
+                            <p class="font-body-md text-on-surface/70 mb-6">Your registration has been rejected.</p>
+                            
+                            <div class="bg-black/40 p-6 rounded-xl border border-red-500/20 mb-6 text-left">
+                                <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                                    <div>
+                                        <p class="text-red-500 text-xs uppercase tracking-wider mb-1">Registration ID</p>
+                                        <p class="font-label-md">${registration.id || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-red-500 text-xs uppercase tracking-wider mb-1">Name</p>
+                                        <p class="font-label-md">${primaryAttendee.name || 'N/A'}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-red-500 text-xs uppercase tracking-wider mb-1">Rejection Reason</p>
+                                    <p class="font-label-md text-on-surface/80">${registration.rejectionReason || 'No reason provided'}</p>
+                                </div>
+                                ${attendeesHTML}
+                            </div>
+                            
+                            <p class="text-on-surface/60 text-sm mb-4">If you believe this is an error, please contact the event organizers.</p>
+                            <a href="tickets.html" class="inline-block px-6 py-3 bg-primary text-black rounded-full font-label-md uppercase tracking-wider hover:bg-white transition-all">
+                                Register Again
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            statusResult.innerHTML = statusHTML;
+        }
+    </script>
+</body>
 </html>
