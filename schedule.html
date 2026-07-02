@@ -1,35 +1,24 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html class="dark" lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Schedule | SST Farewell</title>
-    <style>body{margin:0;font-family:Arial,sans-serif;background:#071018;color:#f5f7fb;line-height:1.6}a{color:#f5c84b;text-decoration:none}header{background:linear-gradient(135deg,#111827,#1f2937);padding:24px 20px}nav{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}nav a{padding:8px 12px;border:1px solid rgba(255,255,255,.15);border-radius:999px}main{max-width:1100px;margin:0 auto;padding:24px 20px 60px}.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px;margin-top:20px}.timeline{display:grid;gap:12px}</style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+    <style>body{background:#000;color:#fff;overflow-x:hidden}.glass-card{background:rgba(45,9,9,0.6);backdrop-filter:blur(20px);border:1px solid rgba(201,168,76,0.3)}</style>
   </head>
-  <body>
-    <header>
-      <nav>
-        <strong>SST Farewell 2026</strong>
-        <div>
-          <a href="index.html">Home</a>
-          <a href="artists.html">Artists</a>
-          <a href="schedule.html">Schedule</a>
-          <a href="gallery.html">Gallery</a>
-          <a href="tickets.html">Tickets</a>
-          <a href="status.html">Status</a>
-        </div>
-      </nav>
-    </header>
-    <main>
-      <div class="card">
-        <h1>Event schedule</h1>
-        <div class="timeline">
-          <div class="card"><strong>6:00 PM</strong> — Doors open</div>
-          <div class="card"><strong>7:00 PM</strong> — Welcome remarks</div>
-          <div class="card"><strong>8:00 PM</strong> — Performances begin</div>
-          <div class="card"><strong>10:30 PM</strong> — Farewell finale</div>
-        </div>
-      </div>
+  <body class="font-body-md">
+    <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20"><div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto"><div class="flex items-center gap-3"><img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/><span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span></div><div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80"><a class="hover:text-primary transition-colors" href="index.html">Home</a><a class="text-primary border-b-2 border-primary pb-1" href="schedule.html#schedule">Event</a><a class="hover:text-primary transition-colors" href="artists.html">Artists</a><a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a><a class="hover:text-primary transition-colors" href="status.html">Status</a></div></div></nav>
+
+    <main class="max-w-container-max mx-auto px-gutter pt-32 pb-20">
+      <section class="text-center mb-12"><p class="text-primary uppercase tracking-[0.3em] mb-4">Event Schedule</p><h1 class="font-headline-xl text-white mb-4">Two unforgettable days</h1><p class="text-white/70 max-w-2xl mx-auto">A beautifully arranged timeline for the farewell celebration, from entry and activities to the grand finale.</p></section>
+      <section class="space-y-8">
+        <div class="glass-card p-8 rounded-3xl border border-primary/20"><h2 class="font-headline-md text-white text-2xl mb-4">Day 1 • July 17</h2><ul class="space-y-3 text-white/70"><li>4:00 PM — Entry at UMT</li><li>5:00 PM – 7:00 PM — Batch photoshoots and activities</li><li>7:00 PM – 8:00 PM — Drone shots and lively batch moments</li><li>8:00 PM onward — Lanterns and special surprise moments</li></ul></div>
+        <div class="glass-card p-8 rounded-3xl border border-primary/20"><h2 class="font-headline-md text-white text-2xl mb-4">Day 2 • July 18</h2><ul class="space-y-3 text-white/70"><li>11:00 AM — Formal start of the day</li><li>12:00 PM – 1:30 PM — Jamming sessions</li><li>1:30 PM – 2:10 PM — Dinner and dessert</li><li>2:10 PM – 4:00 PM — Qawwali, DJ, and the formal finale</li></ul></div>
+      </section>
     </main>
+
+    <footer class="bg-black border-t border-primary/20 pt-12 pb-8 px-gutter"><div class="max-w-container-max mx-auto text-center text-white/50 text-sm">© 2026 SST Farewell — UMT Lahore</div></footer>
   </body>
 </html>

@@ -1,36 +1,33 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html class="dark" lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Gallery | SST Farewell</title>
-    <style>body{margin:0;font-family:Arial,sans-serif;background:#071018;color:#f5f7fb;line-height:1.6}a{color:#f5c84b;text-decoration:none}header{background:linear-gradient(135deg,#111827,#1f2937);padding:24px 20px}nav{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}nav a{padding:8px 12px;border:1px solid rgba(255,255,255,.15);border-radius:999px}main{max-width:1100px;margin:0 auto;padding:24px 20px 60px}.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px;margin-top:20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.photo{min-height:160px;border-radius:16px;background:linear-gradient(135deg,#374151,#111827);display:flex;align-items:center;justify-content:center;color:#f5c84b}</style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { colors: { primary: "#C9A84C", secondary: "#8B0000", tertiary: "#2D0909", background: "#000000", "on-surface": "#FFFFFF" }, fontFamily: { "headline-xl": ["Playfair Display"], "body-md": ["Hanken Grotesk"], "label-md": ["Hanken Grotesk"] } } }
+      }
+    </script>
+    <style>body{background:#000;color:#fff;overflow-x:hidden}.glass-card{background:rgba(45,9,9,0.6);backdrop-filter:blur(20px);border:1px solid rgba(201,168,76,0.3)}</style>
   </head>
-  <body>
-    <header>
-      <nav>
-        <strong>SST Farewell 2026</strong>
-        <div>
-          <a href="index.html">Home</a>
-          <a href="artists.html">Artists</a>
-          <a href="schedule.html">Schedule</a>
-          <a href="gallery.html">Gallery</a>
-          <a href="tickets.html">Tickets</a>
-          <a href="status.html">Status</a>
-        </div>
-      </nav>
-    </header>
-    <main>
-      <div class="card">
-        <h1>Gallery</h1>
-        <p>Moments from previous SST events and the farewell night.</p>
-      </div>
-      <div class="grid">
-        <div class="photo">Photo 1</div>
-        <div class="photo">Photo 2</div>
-        <div class="photo">Photo 3</div>
-        <div class="photo">Photo 4</div>
-      </div>
+  <body class="font-body-md">
+    <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20">
+      <div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto"><div class="flex items-center gap-3"><img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/><span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span></div><div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80"><a class="hover:text-primary transition-colors" href="index.html">Home</a><a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event</a><a class="hover:text-primary transition-colors" href="artists.html">Artists</a><a class="text-primary border-b-2 border-primary pb-1" href="gallery.html">Gallery</a><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a><a class="hover:text-primary transition-colors" href="status.html">Status</a></div></div>
+    </nav>
+
+    <main class="max-w-container-max mx-auto px-gutter pt-32 pb-20">
+      <section class="text-center mb-12"><p class="text-primary uppercase tracking-[0.3em] mb-4">Gallery</p><h1 class="font-headline-xl text-white mb-4">Moments from the farewell</h1><p class="text-white/70 max-w-2xl mx-auto">Snapshots, videos, and highlights from the event will be shared here in one elegant gallery experience.</p></section>
+      <section class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div class="glass-card rounded-3xl overflow-hidden border border-primary/20"><div class="h-56 bg-gradient-to-br from-primary/20 to-secondary/20"></div><div class="p-6"><h3 class="font-headline-md text-white mb-2">Photoshoot Night</h3><p class="text-white/60">Signature capture moments from the opening evening.</p></div></div>
+        <div class="glass-card rounded-3xl overflow-hidden border border-primary/20"><div class="h-56 bg-gradient-to-br from-secondary/20 to-tertiary/20"></div><div class="p-6"><h3 class="font-headline-md text-white mb-2">Lantern Glow</h3><p class="text-white/60">A visual highlight that made the event feel magical.</p></div></div>
+        <div class="glass-card rounded-3xl overflow-hidden border border-primary/20"><div class="h-56 bg-gradient-to-br from-primary/10 to-background"></div><div class="p-6"><h3 class="font-headline-md text-white mb-2">Formal Finale</h3><p class="text-white/60">The grand close of the celebration in style and elegance.</p></div></div>
+      </section>
     </main>
+
+    <footer class="bg-black border-t border-primary/20 pt-12 pb-8 px-gutter"><div class="max-w-container-max mx-auto text-center text-white/50 text-sm">© 2026 SST Farewell — UMT Lahore</div></footer>
   </body>
 </html>
