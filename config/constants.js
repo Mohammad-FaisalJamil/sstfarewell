@@ -9,10 +9,13 @@ export const PAYMENT_CONFIG = {
 };
 
 export const TICKET_CONFIG = {
-    price: 2950,
+    earlyBirdPrice: 2950,
+    regularPrice: 3000,
     originalPrice: 3600,
     maxQuantity: 100,
     minQuantity: 1,
+    earlyBirdEndDate: "2026-07-02T23:59:59",
+    regularPriceEndDate: "2026-07-05T23:59:59",
     eventStartDate: "2026-07-17T16:00:00"
 };
 

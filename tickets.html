@@ -297,7 +297,7 @@
                 <div class="w-full max-w-lg">
                     <!-- Single Early Bird Ticket Card -->
                     <div class="glass-card p-10 rounded-3xl border-2 border-primary/40 bg-tertiary relative overflow-hidden group hover:border-primary transition-all">
-                        <div class="absolute top-4 right-4 bg-primary text-black text-xs px-4 py-1 rounded-full font-bold uppercase tracking-widest">
+                        <div class="absolute top-4 right-4 bg-primary text-black text-xs px-4 py-1 rounded-full font-bold uppercase tracking-widest" id="ticket-phase-badge">
                             Early Bird
                         </div>
                         <h3 class="font-headline-lg text-white mb-4 text-3xl">Full Experience</h3>
@@ -326,7 +326,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="font-headline-xl text-primary text-5xl mb-2">PKR 2,950</div>
+                        <div class="font-headline-xl text-primary text-5xl mb-2" id="current-price">PKR 2,950</div>
                         <div class="text-white/50 line-through mb-6">PKR 3,600</div>
                         
                         <!-- Quantity Selector -->
@@ -579,18 +579,67 @@
         window.currentQuantity = 1;
         let activeStep = 1;
         
-        // Store globally for use in module functions
-        const TICKET_PRICE = 2950;
-        const TICKET_ORIGINAL_PRICE = 3600;
+        // Pricing phases configuration
+        const EARLY_BIRD_PRICE = 2950;
+        const REGULAR_PRICE = 3000;
+        const ORIGINAL_PRICE = 3600;
+        const EARLY_BIRD_END = new Date('2026-07-02T23:59:59');
+        const REGULAR_PRICE_END = new Date('2026-07-05T23:59:59');
+        const EVENT_START = new Date('2026-07-17T16:00:00');
 
-        // Ticket countdown timer
-        const eventStart = new Date('2026-07-17T16:00:00');
-        const now = new Date();
-        const targetDate = eventStart > now ? eventStart : new Date(eventStart.getFullYear() + 1, eventStart.getMonth(), eventStart.getDate(), eventStart.getHours(), eventStart.getMinutes(), eventStart.getSeconds());
+        // Determine current price based on date
+        function getCurrentPrice() {
+            const now = new Date();
+            if (now <= EARLY_BIRD_END) {
+                return EARLY_BIRD_PRICE;
+            } else if (now <= REGULAR_PRICE_END) {
+                return REGULAR_PRICE;
+            } else {
+                return REGULAR_PRICE; // After phase 2, keep regular price
+            }
+        }
+
+        // Get next phase end date
+        function getNextPhaseEnd() {
+            const now = new Date();
+            if (now <= EARLY_BIRD_END) {
+                return EARLY_BIRD_END;
+            } else if (now <= REGULAR_PRICE_END) {
+                return REGULAR_PRICE_END;
+            } else {
+                return EVENT_START;
+            }
+        }
+
+        // Get current phase label
+        function getCurrentPhaseLabel() {
+            const now = new Date();
+            if (now <= EARLY_BIRD_END) {
+                return "Early Bird";
+            } else if (now <= REGULAR_PRICE_END) {
+                return "Standard";
+            } else {
+                return "Regular";
+            }
+        }
+
+        // Initialize pricing
+        window.currentPrice = getCurrentPrice();
+        const targetDate = getNextPhaseEnd();
 
         function updateTicketCountdown() {
             const currentTime = new Date().getTime();
             const distance = targetDate - currentTime;
+            
+            if (distance <= 0) {
+                // Refresh price when phase ends
+                window.currentPrice = getCurrentPrice();
+                updateUI();
+                // Restart countdown for next phase
+                location.reload();
+                return;
+            }
+            
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -600,6 +649,12 @@
             document.getElementById("ticket-hours").innerText = hours.toString().padStart(2, '0');
             document.getElementById("ticket-mins").innerText = minutes.toString().padStart(2, '0');
             document.getElementById("ticket-secs").innerText = seconds.toString().padStart(2, '0');
+            
+            // Update price badge
+            const priceBadge = document.getElementById('ticket-phase-badge');
+            if (priceBadge) {
+                priceBadge.innerText = getCurrentPhaseLabel();
+            }
         }
 
         setInterval(updateTicketCountdown, 1000);
@@ -624,10 +679,13 @@
         function updateUI() {
             const subtotalText = document.getElementById('subtotal');
             const quantityText = document.getElementById('quantity');
+            const currentPriceDisplay = document.getElementById('current-price');
+            
             if(quantityText) quantityText.innerText = window.currentQuantity;
             
             const subtotal = window.currentPrice * window.currentQuantity;
             if(subtotalText) subtotalText.innerText = 'PKR ' + subtotal.toLocaleString();
+            if(currentPriceDisplay) currentPriceDisplay.innerText = 'PKR ' + window.currentPrice.toLocaleString();
             
             const summaryQty = document.getElementById('summary-qty');
             const summaryTotal = document.getElementById('summary-total');
