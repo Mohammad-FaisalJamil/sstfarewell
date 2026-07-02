@@ -307,8 +307,11 @@ export async function validatePaymentAndGoToStep4() {
     if (confirmSpinner) confirmSpinner.classList.remove('hidden');
 
     try {
+        const registrationId = 'SST-' + Date.now().toString().slice(-6);
+
         // Prepare registration data
         const registrationData = {
+            id: registrationId,
             attendees: window.attendeeData || [],
             amount: currentPrice * quantity,
             quantity: quantity,

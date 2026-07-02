@@ -443,6 +443,10 @@
                 </div>
                 <h1 class="font-headline-lg text-headline-lg text-primary mb-4">Registration Submitted!</h1>
                 <p class="font-body-lg text-on-surface/80 mb-6">Your registration has been submitted successfully.</p>
+                <div class="bg-primary/10 border border-primary/30 p-4 rounded-lg mb-6 max-w-sm mx-auto">
+                    <p class="text-primary text-xs uppercase tracking-wider mb-1 font-medium">Registration ID</p>
+                    <p id="success-reg-id" class="text-xl font-bold text-white tracking-widest">SST-XXXXXX</p>
+                </div>
                 <div class="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-lg mb-6">
                     <p class="text-yellow-400 text-sm font-medium mb-2">⏳ Pending Approval</p>
                     <p class="text-on-surface/70 text-sm">Your registration is awaiting admin approval. You will receive your tickets via email once approved.</p>
@@ -556,8 +560,12 @@
                     attendees.push(attendee);
                 }
 
+                const registrationId = 'SST-' + Date.now().toString().slice(-6);
+                window.lastRegistrationId = registrationId;
+
                 // Save to Firebase
                 const registrationData = {
+                    id: registrationId,
                     attendees: attendees,
                     quantity: window.currentQuantity,
                     ticketType: 'Full Experience',
@@ -1025,6 +1033,10 @@
             // Handle step 4 animation
             if(step === 4) {
                 initCelebration();
+                const idDisplay = document.getElementById('success-reg-id');
+                if (idDisplay && window.lastRegistrationId) {
+                    idDisplay.textContent = window.lastRegistrationId;
+                }
             }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });

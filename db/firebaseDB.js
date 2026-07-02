@@ -109,7 +109,7 @@ export async function checkRegistrationStatus(studentId) {
                     const regTime = data.createdAt ? data.createdAt.seconds : 0;
                     if (regTime > latestTime) {
                         latestTime = regTime;
-                        foundRegistration = { ...data, id: doc.id };
+                        foundRegistration = { ...data, docId: doc.id, id: data.id || doc.id };
                     }
                 }
             }
