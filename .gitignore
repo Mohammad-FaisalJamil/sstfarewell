@@ -1,0 +1,12 @@
+# Ignore local secret files and environment overrides
+firebase-config.js
+.env
+.env.local
+.env.*.local
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore node modules if you ever add Node tooling
+node_modules/
