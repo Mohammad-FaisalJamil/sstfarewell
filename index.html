@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SST Farewell 2026</title>
+    <style>
+      :root { color-scheme: dark; }
+      body { margin:0; font-family: Arial, sans-serif; background:#071018; color:#f5f7fb; line-height:1.6; }
+      a { color:#f5c84b; text-decoration:none; }
+      header { background:linear-gradient(135deg,#111827,#1f2937); padding:24px 20px; }
+      nav { max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center; }
+      nav a { padding:8px 12px; border:1px solid rgba(255,255,255,.15); border-radius:999px; }
+      main { max-width:1100px; margin:0 auto; padding:24px 20px 60px; }
+      .hero { display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; padding:40px 0 24px; }
+      .card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:24px; box-shadow:0 10px 35px rgba(0,0,0,.2); }
+      .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin-top:24px; }
+      footer { border-top:1px solid rgba(255,255,255,.12); padding:24px 20px 40px; color:#98a2b3; text-align:center; }
+      @media (max-width:700px){ .hero{grid-template-columns:1fr;} }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <strong>SST Farewell 2026</strong>
+        <div>
+          <a href="index.html">Home</a>
+          <a href="artists.html">Artists</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="tickets.html">Tickets</a>
+          <a href="status.html">Status</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="card">
+          <p style="text-transform:uppercase; letter-spacing:.2em; color:#f5c84b; margin:0 0 8px;">Farewell Night</p>
+          <h1 style="font-size:2.2rem; margin:0 0 12px;">A public celebration for the SST community.</h1>
+          <p>This static frontend is now safe to publish on GitHub. Any backend or secret configuration stays local and out of version control.</p>
+          <p><a href="tickets.html">Reserve your place</a> or view the <a href="schedule.html">event timeline</a>.</p>
+        </div>
+        <div class="card">
+          <h2>Highlights</h2>
+          <ul>
+            <li>Live performances and DJ sets</li>
+            <li>Community gallery and photo moments</li>
+            <li>Safe frontend-only deployment</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h3>Featured artists</h3>
+          <p>Meet the performers and special guests.</p>
+        </div>
+        <div class="card">
+          <h3>Event schedule</h3>
+          <p>See the full program for the night.</p>
+        </div>
+        <div class="card">
+          <h3>Tickets</h3>
+          <p>Frontend pages only; backend stays hidden locally.</p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      © 2026 SST Farewell — frontend only on GitHub.
+    </footer>
+  </body>
+</html>
