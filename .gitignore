@@ -1,6 +1,7 @@
 # Ignore external dependencies
 node_modules/
 
+js\config.js
 # Ignore system configuration and local logs
 .DS_Store
 npm-debug.log*
