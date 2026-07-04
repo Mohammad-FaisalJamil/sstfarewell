@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SST Farewell — Event Schedule</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-card {
+        background: rgba(49, 0, 0, 0.4);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(230, 195, 100, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+        border-color: #e6c364;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 10px 30px -10px rgba(230, 195, 100, 0.2);
+    }
+    .gold-glow {
+        box-shadow: 0 0 20px rgba(230, 195, 100, 0.15);
+    }
+    .timeline-spine::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(to bottom, transparent, #e6c364, transparent);
+    }
+    @media (max-width: 768px) {
+        .timeline-spine::before {
+            left: 20px;
+            transform: none;
+        }
+        
+        /* Responsive improvements */
+        .glass-card {
+            padding: 16px;
+        }
+        
+        .text-3xl {
+            font-size: 1.5rem;
+        }
+    }
+    canvas#bg-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+    
+    /* Mobile menu styles */
+    #mobile-menu.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+    
+    /* Enhanced animations */
+    @keyframes fadeInScale {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    .fade-in-scale {
+        animation: fadeInScale 0.6s ease-out forwards;
+    }
+</style>
+<script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+            });
+            
+            // Close menu when clicking on a link
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+        }
+        
+        // Performance: Lazy load images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    });
+</script>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#C9A84C",
+                    "secondary": "#8B0000",
+                    "tertiary": "#2D0909",
+                    "background": "#000000",
+                    "on-background": "#FFFFFF",
+                    "surface": "#000000",
+                    "on-surface": "#FFFFFF",
+                    "outline": "#C9A84C",
+                    "surface-container-high": "#1c1c1c",
+                    "surface-container-low": "#111111",
+                    "on-surface-variant": "#e3beb8",
+                },
+                borderRadius: {
+                    DEFAULT: "0.25rem",
+                    lg: "0.5rem",
+                    xl: "0.75rem",
+                    full: "9999px"
+                },
+                spacing: {
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px",
+                    unit: "8px",
+                    "container-max": "1280px",
+                    gutter: "24px"
+                },
+                fontFamily: {
+                    "headline-xl": ["Playfair Display"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-lg": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"],
+                    "label-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Playfair Display"]
+                },
+                fontSize: {
+                    "headline-xl": ["64px", {lineHeight: "72px", letterSpacing: "-0.02em", fontWeight: "700"}],
+                    "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}],
+                    "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}],
+                    "headline-lg": ["40px", {lineHeight: "48px", letterSpacing: "-0.01em", fontWeight: "600"}],
+                    "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}],
+                    "label-md": ["14px", {lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600"}],
+                    "headline-lg-mobile": ["32px", {lineHeight: "40px", fontWeight: "600"}]
+                }
+            }
+        }
+    }
+</script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<header class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20">
+<nav class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+<span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span>
+</div>
+<div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80">
+<a class="hover:text-primary transition-colors" href="index.html#home">Home</a>
+<a class="text-primary border-b-2 border-primary pb-1" href="schedule.html#schedule">Event</a>
+<a class="hover:text-primary transition-colors" href="artists.html">Artists</a>
+<a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a>
+<a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a>
+</div>
+<div class="hidden md:block">
+<a href="tickets.html" class="bg-primary text-black px-6 py-2 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200">
+Buy Tickets
+</a>
+</div>
+<!-- Mobile Menu Button -->
+<button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none hover:text-white transition-colors duration-300">
+    <span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</nav>
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="fixed inset-x-0 top-[73px] z-40 bg-black/95 backdrop-blur-xl border-b border-primary/10 flex flex-col items-center justify-start py-8 gap-6 font-label-md uppercase tracking-widest text-white/80 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+    <a class="hover:text-primary transition-colors text-base" href="index.html#home">Home</a>
+    <a class="hover:text-primary transition-colors text-base" href="schedule.html#schedule">Event</a>
+    <a class="hover:text-primary transition-colors text-base" href="artists.html">Artists</a>
+    <a class="hover:text-primary transition-colors text-base" href="gallery.html">Gallery</a>
+    <a class="hover:text-primary transition-colors text-base" href="tickets.html">Tickets</a>
+    <a href="tickets.html" class="bg-primary text-black px-8 py-3 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200 mt-2">Buy Tickets</a>
+</div>
+</header>
+<main class="pt-24" id="top">
+<section class="relative h-[40vh] min-h-[300px] flex items-center justify-center text-center overflow-hidden bg-black">
+<div class="relative z-10 px-gutter">
+<h1 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-primary mb-4">Event Schedule</h1>
+<div class="relative inline-block">
+<p class="font-body-lg text-body-lg text-on-surface/80">From cinematic photoshoots and radiant sky lanterns to qawwali, DJ beats, dinner, cake cutting, and the grand formal finale.</p>
+<div class="h-0.5 w-24 bg-primary mx-auto mt-4 rounded-full shadow-[0_0_10px_#e6c364]"></div>
+</div>
+</div>
+</section>
+<section class="relative py-12" id="schedule">
+<canvas id="bg-animation"></canvas>
+<div class="max-w-container-max mx-auto px-gutter relative z-10 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+<div class="glass-card rounded-2xl p-6 text-center">
+<div class="text-3xl font-bold text-primary mb-2">2</div>
+<div class="text-xs uppercase tracking-[0.25em] text-on-surface/70">Days</div>
+</div>
+<div class="glass-card rounded-2xl p-6 text-center">
+<div class="text-3xl font-bold text-primary mb-2">7</div>
+<div class="text-xs uppercase tracking-[0.25em] text-on-surface/70">Departments</div>
+</div>
+<div class="glass-card rounded-2xl p-6 text-center">
+<div class="text-3xl font-bold text-primary mb-2">250+</div>
+<div class="text-xs uppercase tracking-[0.25em] text-on-surface/70">Sky Lanterns</div>
+</div>
+<div class="glass-card rounded-2xl p-6 text-center">
+<div class="text-3xl font-bold text-primary mb-2">Formal</div>
+<div class="text-xs uppercase tracking-[0.25em] text-on-surface/70">Night</div>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter relative z-10 mb-12">
+<div class="flex flex-col md:flex-row justify-center gap-4">
+<button class="flex-1 max-w-md py-6 px-8 rounded-xl glass-card transition-all duration-300 group bg-primary text-on-primary shadow-[0_0_30px_rgba(230,195,100,0.3)]" id="tab-day-1" onclick="switchDay(1)">
+<span class="block font-label-md text-label-md uppercase opacity-70 mb-1">Session 01</span>
+<span class="font-headline-md text-headline-md block">Day 1 — Photoshoot &amp; Batch Gathering</span>
+</button>
+<button class="flex-1 max-w-md py-6 px-8 rounded-xl glass-card transition-all duration-300 border border-primary/20 text-on-surface hover:border-primary/50 group" id="tab-day-2" onclick="switchDay(2)">
+<span class="block font-label-md text-label-md uppercase opacity-50 mb-1">Session 02</span>
+<span class="font-headline-md text-headline-md block">Day 2 — Dinner, DJ &amp; Formal Night</span>
+</button>
+</div>
+</div>
+<div class="relative max-w-container-max mx-auto px-gutter z-10" id="content-day-1">
+<div class="timeline-spine relative">
+<div class="flex flex-col md:flex-row items-center mb-24 relative z-10">
+<div class="md:w-1/2 flex justify-end md:pr-16 mb-8 md:mb-0">
+<div class="glass-card p-8 rounded-2xl w-full max-w-md text-right">
+<span class="text-primary font-label-md mb-2 block uppercase">4:00 PM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Entry at UMT</h3>
+<p class="text-on-surface-variant font-body-md mb-4">The day begins with everyone arriving at the venue and settling into the first celebration of the farewell weekend.</p>
+<div class="inline-flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="text-label-md">Campus welcome</span>
+</div>
+</div>
+</div>
+<div class="w-12 h-12 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 flex items-center justify-center shadow-[0_0_20px_#e6c364] hidden md:flex">
+<span class="material-symbols-outlined text-background" data-icon="camera">camera</span>
+</div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row-reverse items-center mb-24 relative z-10">
+<div class="md:w-1/2 flex justify-start md:pl-16 mb-8 md:mb-0">
+<div class="glass-card p-8 rounded-2xl w-full max-w-md border-l-4 border-primary">
+<span class="text-primary font-label-md mb-2 block uppercase">5:00 PM – 7:00 PM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Batch Photoshoots &amp; Fun Activities</h3>
+<p class="text-on-surface-variant font-body-md mb-4">The batch comes together for vibrant group photos, playful activities, and energizing moments shared across departments.</p>
+<div class="inline-flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<span class="text-label-md">Create memories</span>
+</div>
+</div>
+</div>
+<div class="w-12 h-12 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 flex items-center justify-center shadow-[0_0_20px_#e6c364] hidden md:flex">
+<span class="material-symbols-outlined text-background" data-icon="palette">palette</span>
+</div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row items-center mb-24 relative z-10">
+<div class="md:w-1/2 flex justify-end md:pr-16 mb-8 md:mb-0">
+<div class="glass-card p-8 rounded-2xl w-full max-w-md text-right">
+<span class="text-primary font-label-md mb-2 block uppercase">7:00 PM – 8:00 PM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Drone Shoots &amp; Lively Batch Moments</h3>
+<p class="text-on-surface-variant font-body-md mb-4">The atmosphere peaks with cinematic drone coverage, laughter, and the kind of spontaneous moments that define the farewell.</p>
+<div class="inline-flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="light">light</span>
+<span class="text-label-md">Cinematic energy</span>
+</div>
+</div>
+</div>
+<div class="w-12 h-12 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 flex items-center justify-center shadow-[0_0_20px_#e6c364] hidden md:flex">
+<span class="material-symbols-outlined text-background" data-icon="mode_fan">mode_fan</span>
+</div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row-reverse items-center mb-12 relative z-10">
+<div class="md:w-1/2 flex justify-start md:pl-16">
+<div class="glass-card p-8 rounded-2xl w-full max-w-md border-dashed border-2 border-primary/40 relative overflow-hidden group">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="text-primary font-label-md mb-2 block uppercase">8:00 PM onward</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Sky Lanterns &amp; Surprise Event</h3>
+<p class="text-on-surface-variant font-body-md mb-4 italic">The evening closes with sky lanterns, glowing memories, and a special surprise experience that makes the night unforgettable.</p>
+<div class="inline-flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-label-md">A special farewell</span>
+</div>
+</div>
+</div>
+<div class="w-12 h-12 bg-surface-container-highest rounded-full absolute left-1/2 -translate-x-1/2 flex items-center justify-center border border-primary hidden md:flex">
+<span class="material-symbols-outlined text-primary" data-icon="celebration">celebration</span>
+</div>
+<div class="md:w-1/2"></div>
+</div>
+</div>
+</div>
+<div class="relative max-w-container-max mx-auto px-gutter z-10 hidden" id="content-day-2">
+<div class="timeline-spine relative">
+<div class="flex flex-col md:flex-row items-center mb-20 relative z-10">
+<div class="md:w-1/2 flex justify-end md:pr-16 mb-8 md:mb-0">
+<div class="glass-card p-6 rounded-2xl w-full max-w-md text-right border-r-4 border-primary">
+<span class="text-primary font-label-md mb-1 block uppercase">11:00 AM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Entry &amp; Formal Start</h3>
+<p class="text-on-surface-variant font-body-md mt-2">The second day begins with the official welcome and the formal opening of the celebration.</p>
+</div>
+</div>
+<div class="w-8 h-8 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 hidden md:block shadow-[0_0_15px_#e6c364]"></div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row-reverse items-center mb-20 relative z-10">
+<div class="md:w-1/2 flex justify-start md:pl-16 mb-8 md:mb-0">
+<div class="glass-card p-6 rounded-2xl w-full max-w-md">
+<span class="text-primary font-label-md mb-1 block uppercase">12:00 PM – 12:30 PM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Jamming Session 1</h3>
+<p class="text-on-surface-variant font-body-md mt-2">A relaxed opening performance that sets the tone for the grand evening.</p>
+</div>
+</div>
+<div class="w-8 h-8 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 hidden md:block shadow-[0_0_15px_#e6c364]"></div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row items-center mb-20 relative z-10">
+<div class="md:w-1/2 flex justify-end md:pr-16 mb-8 md:mb-0">
+<div class="glass-card p-6 rounded-2xl w-full max-w-md text-right">
+<span class="text-primary font-label-md mb-1 block uppercase">12:30 PM – 1:30 PM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Jamming Session 2</h3>
+<p class="text-on-surface-variant font-body-md mt-2">The musical energy continues with a second performance stretch that keeps the mood warm and celebratory.</p>
+</div>
+</div>
+<div class="w-8 h-8 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 hidden md:block shadow-[0_0_15px_#e6c364]"></div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row-reverse items-center mb-20 relative z-10">
+<div class="md:w-1/2 flex justify-start md:pl-16 mb-8 md:mb-0">
+<div class="glass-card p-8 rounded-2xl w-full max-w-md bg-secondary text-on-surface border-2 border-primary/50">
+<span class="font-label-md mb-1 block uppercase text-primary">1:30 PM – 2:10 PM</span>
+<h3 class="font-headline-md text-headline-md">Dinner &amp; Dessert</h3>
+<p class="font-body-md mt-2">A curated meal brings everyone together for a relaxed and elegant break before the evening performances begin.</p>
+</div>
+</div>
+<div class="w-8 h-8 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 shadow-[0_0_20px_#e6c364] hidden md:block"></div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row items-center mb-20 relative z-10">
+<div class="md:w-1/2 flex justify-end md:pr-16 mb-8 md:mb-0">
+<div class="glass-card p-6 rounded-2xl w-full max-w-md text-right border-r-4 border-primary">
+<span class="text-primary font-label-md mb-1 block uppercase">2:10 PM – 3:10 PM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Qawwali Performance</h3>
+<p class="text-on-surface-variant font-body-md mt-2">The evening takes on a soulful rhythm with a live qawwali performance that captures the mood of the farewell.</p>
+</div>
+</div>
+<div class="w-8 h-8 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 hidden md:block shadow-[0_0_15px_#e6c364]"></div>
+<div class="md:w-1/2"></div>
+</div>
+<div class="flex flex-col md:flex-row items-center relative z-10">
+<div class="md:w-1/2 flex justify-end md:pr-16 mb-8 md:mb-0">
+<div class="glass-card p-8 rounded-2xl w-full max-w-md text-right bg-secondary border-2 border-primary">
+<span class="text-primary font-label-md mb-1 block uppercase">3:10 PM – 4:00 PM</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">DJ Set, Gorilla Performance &amp; Formal Finale</h3>
+<p class="text-on-surface-variant font-body-md mt-2">The finale brings together DJ energy, a gorilla performance, and the grand formal closing of the farewell celebration.</p>
+</div>
+</div>
+<div class="w-12 h-12 bg-primary rounded-full absolute left-1/2 -translate-x-1/2 flex items-center justify-center shadow-[0_0_30px_#e6c364] hidden md:flex">
+<span class="material-symbols-outlined text-background" data-icon="celebration">celebration</span>
+</div>
+<div class="md:w-1/2"></div>
+</div>
+</div>
+</div>
+</section>
+<section class="max-w-container-max mx-auto px-gutter py-24 border-t border-primary/10" id="venue">
+<h2 class="font-headline-md text-headline-md text-primary mb-12 text-center">Event Locations</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="glass-card p-8 rounded-3xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full"></div>
+<div class="relative z-10">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-md uppercase tracking-wider mb-4 inline-block">Day 01</span>
+<h4 class="font-headline-sm text-headline-md mb-2">UMT</h4>
+<p class="text-on-surface-variant mb-6">The first day begins at UMT with photoshoots, lively batch moments, and the glowing sky lantern ceremony under the evening sky.</p>
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined" data-icon="pin_drop">pin_drop</span>
+<span class="text-label-md">UMT Lahore Campus</span>
+</div>
+</div>
+</div>
+<div class="glass-card p-8 rounded-3xl relative overflow-hidden group flex flex-col justify-between">
+<div class="relative z-10">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-label-md uppercase tracking-wider mb-4 inline-block">Day 02</span>
+<h4 class="font-headline-sm text-headline-md mb-2">Imperial Marquee</h4>
+<p class="text-on-surface-variant mb-6">The grand finale continues at Imperial Marquee with dinner, jamming sessions, qawwali, DJ energy, and the formal closing night.</p>
+</div>
+<div class="mt-4 rounded-xl overflow-hidden grayscale contrast-125 border border-primary/20 h-32 relative">
+<a href="https://share.google/DjQPGTrxFKqPUVWdJ" target="_blank" rel="noreferrer" class="absolute inset-0 bg-background/50 flex items-center justify-center group-hover:bg-background/20 transition-all">
+<span class="bg-primary text-background px-4 py-1 rounded font-label-md">Open In Maps</span>
+</a>
+<img class="w-full h-full object-cover" data-location="Lahore" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CKA_oOFf-YrmvCI0Rcl2wtFe9HVg6pT-VtO5x12gar6YiRU3MQiDkgY5RfZEIAKM_9Mu4de-6ZdfL36vBTr9ODNS_J211nenhuQhl_VO_D9zDaFWvd0gNNhxzs5CmFOsWe0lMZu6Q6MYK8jitXPVAXYNmuU3CLESaV9tFLvZ2e9ZTSbmqBFnLkBzAgFXkR_eoi-O9pQvJrTYjqvIghd4mXq_zRbdv7u4l2hyXf_Gzb1Z2kYxadWeQQXwamT04FunaxJ7qJ3mbMQ"/>
+</div>
+</div>
+</div>
+</section>
+<section class="max-w-container-max mx-auto px-gutter py-24 bg-surface-container-low rounded-[4rem] mb-24" id="dress-code">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">What to Wear</h2>
+<p class="text-on-surface-variant">Step out in style and let your outfit tell the story of who you are.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+<div class="text-center p-8 border border-primary/10 rounded-2xl hover:border-primary/40 transition-all hover:scale-105 duration-300">
+<div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="checkroom">checkroom</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-2">Day 1 — Batch Colors</h5>
+<p class="text-on-surface-variant mb-6">For Day 1, let your batch choose a signature color theme and wear it with confidence. Think coordinated energy, vibrant group photos, and expressive style.</p>
+<div class="flex justify-center gap-2">
+<span class="w-6 h-6 rounded-full bg-primary"></span>
+<span class="w-6 h-6 rounded-full bg-secondary"></span>
+<span class="w-6 h-6 rounded-full bg-white/20"></span>
+</div>
+</div>
+<div class="text-center p-8 border border-primary/10 rounded-2xl hover:border-primary/40 transition-all hover:scale-105 duration-300">
+<div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="styler">styler</span>
+</div>
+<h5 class="font-headline-md text-headline-md mb-2">Clothes</h5>
+<p class="text-on-surface-variant mb-6">Wear what feels like you — a poetic, unforgettable look with your own signature, your own grace, and your own kind of magic.</p>
+<div class="flex justify-center gap-2">
+<span class="w-6 h-6 rounded-full border border-primary/50 bg-black"></span>
+<span class="w-6 h-6 rounded-full bg-[#e6c364]"></span>
+<span class="w-6 h-6 rounded-full bg-white"></span>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 text-center px-gutter relative overflow-hidden bg-black" id="tickets">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent"></div>
+<div class="relative z-10">
+<h2 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface mb-8">Ready to Join?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto mb-12">Don't miss out on the most anticipated farewell event of the year. Limited tickets available.</p>
+<a href="tickets.html" class="inline-flex bg-primary text-on-primary px-12 py-4 rounded-lg font-headline-md text-headline-md hover:brightness-110 hover:scale-105 transition-all active:scale-95 gold-glow">
+Buy Your Ticket
+</a>
+</div>
+</section>
+</main>
+<footer class="bg-black border-t border-primary/20 pt-20 pb-12 px-gutter">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+<div class="md:col-span-1">
+<div class="flex items-center gap-3 mb-6">
+<img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+<span class="font-headline-sm text-primary font-bold">SST Farewell</span>
+</div>
+<p class="text-white/60 mb-6">The definitive final celebration for the SST graduating classes of Fall 2022 and Spring 2023.</p>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Quick Links</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="index.html#home">Home</a></li>
+<li><a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event Schedule</a></li>
+<li><a class="hover:text-primary transition-colors" href="artists.html">Artists</a></li>
+<li><a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a></li>
+<li><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Event Info</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm">location_on</span>
+<span>UMT Lahore Campus, Lahore</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+<span>July 17th &amp; 18th, 2026</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Contact</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="tel:+923228423598">0322-8423598</a></li>
+<li><a class="hover:text-primary transition-colors" href="mailto:sst.pc@umt.edu.pk">sst.pc@umt.edu.pk</a></li>
+<li><a class="hover:text-primary transition-colors" href="https://www.instagram.com/sst_pc" target="_blank" rel="noreferrer">@sst_pc</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-white/40 text-xs">© 2026 SST Farewell — UMT Lahore. Batches F2022 &amp; S2023.</p>
+<p class="text-white/40 text-xs">If you are facing any kind of issue, contact to President: 03228423598</p>
+</div>
+</footer>
+<script>
+function switchDay(day) {
+    const tab1 = document.getElementById('tab-day-1');
+    const tab2 = document.getElementById('tab-day-2');
+    const content1 = document.getElementById('content-day-1');
+    const content2 = document.getElementById('content-day-2');
+
+    if (day === 1) {
+        tab1.classList.remove('border-primary/20', 'text-on-surface');
+        tab1.classList.add('bg-primary', 'text-on-primary', 'shadow-[0_0_30px_rgba(230,195,100,0.3)]');
+        tab2.classList.add('border-primary/20', 'text-on-surface');
+        tab2.classList.remove('bg-primary', 'text-on-primary', 'shadow-[0_0_30px_rgba(230,195,100,0.3)]');
+        content1.classList.remove('hidden');
+        content2.classList.add('hidden');
+    } else {
+        tab2.classList.remove('border-primary/20', 'text-on-surface');
+        tab2.classList.add('bg-primary', 'text-on-primary', 'shadow-[0_0_30px_rgba(230,195,100,0.3)]');
+        tab1.classList.add('border-primary/20', 'text-on-surface');
+        tab1.classList.remove('bg-primary', 'text-on-primary', 'shadow-[0_0_30px_rgba(230,195,100,0.3)]');
+        content2.classList.remove('hidden');
+        content1.classList.add('hidden');
+    }
+}
+
+const canvas = document.getElementById('bg-animation');
+const gl = canvas.getContext('webgl');
+
+const vertexSource = `
+    attribute vec2 position;
+    varying vec2 v_texCoord;
+    void main() {
+        v_texCoord = position * 0.5 + 0.5;
+        gl_Position = vec4(position, 0.0, 1.0);
+    }
+`;
+
+const fragmentSource = `
+    precision highp float;
+    uniform float u_time;
+    uniform vec2 u_resolution;
+    varying vec2 v_texCoord;
+
+    void main() {
+        vec2 uv = v_texCoord;
+        float noise = sin(uv.x * 3.0 + u_time * 0.5) * cos(uv.y * 2.0 - u_time * 0.3);
+        noise += sin(uv.y * 5.0 + u_time * 0.8) * 0.5;
+        vec3 color1 = vec3(0.1, 0.02, 0.02);
+        vec3 color2 = vec3(0.0, 0.0, 0.0);
+        vec3 accent = vec3(0.3, 0.05, 0.05);
+        vec3 finalColor = mix(color2, color1, noise * 0.5 + 0.5);
+        finalColor = mix(finalColor, accent, pow(max(0.0, noise), 3.0));
+        float shimmer = step(0.998, fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453 + u_time * 0.1));
+        finalColor += shimmer * vec3(0.79, 0.66, 0.3);
+        gl_FragColor = vec4(finalColor, 1.0);
+    }
+`;
+
+function createShader(gl, type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    return shader;
+}
+
+const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexSource);
+const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
+
+const program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+gl.useProgram(program);
+
+const positionBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+
+const positionLocation = gl.getAttribLocation(program, 'position');
+gl.enableVertexAttribArray(positionLocation);
+gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+const uTimeLocation = gl.getUniformLocation(program, 'u_time');
+const uResLocation = gl.getUniformLocation(program, 'u_resolution');
+
+function render(time) {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform1f(uTimeLocation, time * 0.001);
+    gl.uniform2f(uResLocation, canvas.width, canvas.height);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

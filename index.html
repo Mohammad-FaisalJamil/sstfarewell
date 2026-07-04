@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SST Farewell — F2022 &amp; S2023</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#000000",
+                        "primary": "#C9A84C", // Gold
+                        "secondary": "#8B0000", // Maroon
+                        "tertiary": "#2D0909", // Deep Maroon
+                        "background": "#000000",
+                        "on-background": "#FFFFFF",
+                        "surface": "#000000",
+                        "on-surface": "#FFFFFF",
+                        "outline": "#C9A84C",
+                        "primary-container": "#C9A84C",
+                        "on-primary-container": "#000000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Playfair Display"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "label-md": ["Hanken Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(45, 9, 9, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+        }
+        .text-glow-gold {
+            text-shadow: 0 0 10px rgba(201, 168, 76, 0.6);
+        }
+        
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+            opacity: 0;
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-up {
+            transform: translateY(40px);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .timeline-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .timeline-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 35px rgba(201, 168, 76, 0.18);
+        }
+        .timeline-item {
+            transition: transform 0.25s ease, background-color 0.25s ease;
+        }
+        .timeline-item:hover {
+            transform: translateX(4px);
+            background-color: rgba(201, 168, 76, 0.14);
+        }
+        .day-badge {
+            animation: glowPulse 2.8s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(201, 168, 76, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.24); }
+        }
+        .stats-card {
+            animation: statsFloat 3s ease-in-out infinite;
+        }
+        @keyframes statsFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .section-title {
+            font-size: clamp(2rem, 3.2vw, 2.8rem);
+            line-height: 1.1;
+        }
+        .blink-badge {
+            animation: blinkBadge 1.2s ease-in-out infinite;
+        }
+        @keyframes blinkBadge {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.04); }
+        }
+        .limited-badge {
+            animation: pulseBadge 1.8s ease-in-out infinite;
+        }
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(201, 168, 76, 0.25); }
+            50% { transform: scale(1.06); box-shadow: 0 0 22px rgba(201, 168, 76, 0.3); }
+        }
+    </style>
+</head>
+<body class="font-body-md text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20">
+<div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+<span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span>
+</div>
+<div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80">
+<a class="text-primary border-b-2 border-primary pb-1" href="#home">Home</a>
+<a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event</a>
+<a class="hover:text-primary transition-colors" href="artists.html">Artists</a>
+<a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a>
+<a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a>
+<a class="hover:text-primary transition-colors" href="status.html">Status</a>
+</div>
+<div class="hidden md:block">
+<a href="tickets.html" class="bg-primary text-black px-6 py-2 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200">
+            Buy Tickets
+</a>
+</div>
+<!-- Mobile Menu Button -->
+<button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none hover:text-white transition-colors duration-300">
+    <span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</div>
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="fixed inset-x-0 top-[73px] z-40 bg-black/95 backdrop-blur-xl border-b border-primary/10 flex flex-col items-center justify-start py-8 gap-6 font-label-md uppercase tracking-widest text-white/80 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+    <a class="hover:text-primary transition-colors text-base" href="index.html#home">Home</a>
+    <a class="hover:text-primary transition-colors text-base" href="schedule.html#schedule">Event</a>
+    <a class="hover:text-primary transition-colors text-base" href="artists.html">Artists</a>
+    <a class="hover:text-primary transition-colors text-base" href="gallery.html">Gallery</a>
+    <a class="hover:text-primary transition-colors text-base" href="tickets.html">Tickets</a>
+    <a class="hover:text-primary transition-colors text-base" href="status.html">Status</a>
+    <a href="tickets.html" class="bg-primary text-black px-8 py-3 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200 mt-2">Buy Tickets</a>
+</div>
+</nav>
+<!-- Hero Section -->
+<header id="home" class="relative h-screen flex flex-col items-center justify-center text-center px-gutter pt-20 overflow-hidden bg-black">
+<!-- STITCH_SHADER_START:ANIMATION_14 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_14" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_14');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+varying vec2 v_texCoord;
+
+void main() {
+    vec2 uv = v_texCoord;
+    
+    // Create a slow, flowing "silk" or "smoke" effect in deep maroon and black
+    float noise = sin(uv.x * 3.0 + u_time * 0.5) * cos(uv.y * 2.0 - u_time * 0.3);
+    noise += sin(uv.y * 5.0 + u_time * 0.8) * 0.5;
+    
+    vec3 color1 = vec3(0.1, 0.02, 0.02); // Deepest Maroon
+    vec3 color2 = vec3(0.0, 0.0, 0.0);    // Black
+    vec3 accent = vec3(0.3, 0.05, 0.05); // Brighter Maroon highlight
+    
+    vec3 finalColor = mix(color2, color1, noise * 0.5 + 0.5);
+    finalColor = mix(finalColor, accent, pow(max(0.0, noise), 3.0));
+    
+    // Add subtle "gold dust" shimmer
+    float shimmer = step(0.998, fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453 + u_time * 0.1));
+    finalColor += shimmer * vec3(0.79, 0.66, 0.3); // Gold shimmer
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_14 -->
+<!-- STITCH_THREEJS_START:ANIMATION_15 class="absolute inset-0 w-full h-full bg-transparent pointer-events-none" -->
+<div class="absolute inset-0 w-full h-full bg-transparent pointer-events-none" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_15" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_15');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+container.appendChild(renderer.domElement);
+
+// Create elegant floating "Gold Particles" or "Orbs"
+const geometry = new THREE.SphereGeometry(0.05, 12, 12);
+const material = new THREE.MeshPhongMaterial({ 
+    color: 0xC9A84C, 
+    emissive: 0x443300,
+    shininess: 100 
+});
+
+const particles = [];
+for (let i = 0; i < 100; i++) {
+    const particle = new THREE.Mesh(geometry, material);
+    particle.position.set(
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10
+    );
+    particle.velocity = new THREE.Vector3(
+        (Math.random() - 0.5) * 0.01,
+        (Math.random() - 0.5) * 0.01,
+        (Math.random() - 0.5) * 0.01
+    );
+    scene.add(particle);
+    particles.push(particle);
+}
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+const pointLight = new THREE.PointLight(0xC9A84C, 1);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+camera.position.z = 5;
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    particles.forEach(p => {
+        p.position.add(p.velocity);
+        if (Math.abs(p.position.x) > 5) p.velocity.x *= -1;
+        if (Math.abs(p.position.y) > 5) p.velocity.y *= -1;
+        if (Math.abs(p.position.z) > 5) p.velocity.z *= -1;
+        p.rotation.x += 0.01;
+        p.rotation.y += 0.01;
+    });
+
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_15 -->
+<div class="z-10 animate-fade-in-up">
+<h2 class="font-label-md text-primary mb-4 tracking-[0.3em] uppercase opacity-90">SST Farewell · F2022 &amp; S2023</h2>
+<h1 class="font-headline-xl text-white mb-8 max-w-4xl mx-auto leading-tight text-glow-gold">The Night We've Been Waiting For</h1>
+<div class="flex flex-wrap justify-center gap-4 mb-8">
+<span class="px-6 py-2 border border-primary/40 rounded-full font-label-md text-primary uppercase bg-black/40 backdrop-blur-sm">Day 1: Photoshoot &amp; Batch Gathering</span>
+<span class="px-6 py-2 border border-primary/40 rounded-full font-label-md text-primary uppercase bg-black/40 backdrop-blur-sm">Day 2: Dinner, DJ &amp; Formal Night</span>
+</div>
+<!-- Countdown Timer -->
+<div class="flex gap-4 md:gap-8 justify-center mb-6">
+<div class="glass-card p-4 md:p-6 rounded-xl min-w-[100px]">
+<div class="text-4xl md:text-5xl font-bold text-primary mb-1" id="days">14</div>
+<div class="text-xs uppercase tracking-widest text-white/60">Days</div>
+</div>
+<div class="glass-card p-4 md:p-6 rounded-xl min-w-[100px]">
+<div class="text-4xl md:text-5xl font-bold text-primary mb-1" id="hours">08</div>
+<div class="text-xs uppercase tracking-widest text-white/60">Hours</div>
+</div>
+<div class="glass-card p-4 md:p-6 rounded-xl min-w-[100px]">
+<div class="text-4xl md:text-5xl font-bold text-primary mb-1" id="mins">45</div>
+<div class="text-xs uppercase tracking-widest text-white/60">Mins</div>
+</div>
+<div class="glass-card p-4 md:p-6 rounded-xl min-w-[100px]">
+<div class="text-4xl md:text-5xl font-bold text-primary mb-1" id="secs">12</div>
+<div class="text-xs uppercase tracking-widest text-white/60">Secs</div>
+</div>
+</div>
+<p class="text-white/70 mb-12">Event begins on July 17, 2026 at 4:00 PM • A night of memories, lights, music, and celebration.</p>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<a href="tickets.html" class="bg-primary text-black px-12 py-4 rounded-full font-label-md uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-[0_0_30px_rgba(201,168,76,0.3)]">
+                Register Now
+            </a>
+<a href="#schedule" class="border border-primary text-primary px-12 py-4 rounded-full font-label-md uppercase tracking-widest hover:bg-primary/20 transition-all">
+                View Schedule
+            </a>
+</div>
+</div>
+<div class="absolute inset-0 pointer-events-none opacity-40">
+<span class="material-symbols-outlined absolute top-[20%] left-[10%] text-primary animate-float text-4xl">celebration</span>
+<span class="material-symbols-outlined absolute bottom-[20%] right-[10%] text-primary animate-float text-5xl" style="animation-delay: 2s">auto_awesome</span>
+</div>
+</header>
+<!-- About Section -->
+<section class="reveal reveal-up py-32 px-gutter max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="font-headline-xl text-white mb-8 leading-tight">Two Days.<br/><span class="text-primary">Endless Moments.</span></h2>
+<p class="font-body-lg text-white/70 mb-6 leading-relaxed">
+            This farewell is designed as a heartfelt tribute to the journey of SST, where every memory, every laugh, and every milestone becomes part of one unforgettable celebration. We welcome the brilliant minds of F2022 and S2023 for a grand two-day finale filled with elegance, emotion, and energy.
+        </p>
+<p class="font-body-lg text-white/70 leading-relaxed">
+            From cinematic photoshoots and radiant sky lanterns to an evening of qawwali, DJ beats, dessert, cake cutting, and a formal party, this event brings together the spirit of your batch in the most beautiful way.
+        </p>
+<p class="font-body-lg text-white/70 leading-relaxed">
+            Batch themes will be chosen by each batch through their own group discussions, allowing every department and friend circle to express its own identity in a personal and meaningful way.
+        </p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="stats-card glass-card p-6 md:p-8 rounded-2xl text-center flex flex-col justify-center hover:-translate-y-2 transition-transform bg-secondary/20 border-primary/20">
+<div class="text-3xl md:text-4xl font-bold text-primary mb-2">2</div>
+<div class="text-xs text-white/60 uppercase tracking-widest">Days</div>
+</div>
+<div class="stats-card glass-card p-6 md:p-8 rounded-2xl text-center flex flex-col justify-center hover:-translate-y-2 transition-transform bg-secondary/20 border-primary/20" style="animation-delay: 0.2s;">
+<div class="text-3xl md:text-4xl font-bold text-primary mb-2">7</div>
+<div class="text-xs text-white/60 uppercase tracking-widest">Departments</div>
+</div>
+<div class="stats-card glass-card p-6 md:p-8 rounded-2xl text-center flex flex-col justify-center hover:-translate-y-2 transition-transform bg-secondary/20 border-primary/20" style="animation-delay: 0.4s;">
+<div class="text-3xl md:text-4xl font-bold text-primary mb-2">250+</div>
+<div class="text-xs text-white/60 uppercase tracking-widest">Sky Lanterns</div>
+</div>
+<div class="stats-card glass-card p-6 md:p-8 rounded-2xl text-center flex flex-col justify-center hover:-translate-y-2 transition-transform bg-secondary/20 border-primary/20" style="animation-delay: 0.6s;">
+<div class="text-3xl md:text-4xl font-bold text-primary mb-2">Formal</div>
+<div class="text-xs text-white/60 uppercase tracking-widest">Night</div>
+</div>
+</div>
+</section>
+<!-- Schedule -->
+<section id="schedule" class="reveal reveal-up py-20 px-gutter max-w-container-max mx-auto">
+<div class="text-center mb-12">
+<h2 class="section-title font-headline-lg text-white mb-4">Event Timeline</h2>
+<p class="max-w-2xl mx-auto text-white/70 text-lg md:text-xl">A clear, beautifully arranged schedule so every guest can enjoy the evening effortlessly.</p>
+</div>
+<div class="flex flex-col gap-8">
+<div class="timeline-card glass-card rounded-[2rem] overflow-hidden border-primary/30 relative">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent"></div>
+<div class="grid md:grid-cols-[1.1fr_0.9fr] items-stretch">
+<div class="p-8 md:p-10 relative">
+<div class="day-badge inline-flex px-4 py-1 rounded-full bg-primary text-black font-label-md uppercase tracking-widest mb-6">Day 1 • July 17</div>
+<h3 class="font-headline-md text-white mb-6 text-2xl md:text-3xl">Photoshoot, Fun Activities &amp; Lantern Night</h3>
+<div class="space-y-4 text-left">
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">4:00 PM</p>
+<p class="text-white text-lg mt-1">Entry at UMT</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">5:00 PM – 7:00 PM</p>
+<p class="text-white text-lg mt-1">Batch photoshoots and fun activities</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">7:00 PM – 8:00 PM</p>
+<p class="text-white text-lg mt-1">Drone shoots and lively batch moments</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">8:00 PM onward</p>
+<p class="text-white text-lg mt-1">Sky lanterns, glowing memories, and a special surprise event</p>
+</div>
+</div>
+</div>
+<div class="relative min-h-[260px] md:min-h-full">
+<img class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQdAEAGzBmHb_OXdk2xoCvc0Lg_RZcyMBW7nqfVP06qALCDJndTmwAleUyyQ3VXVo8E87-rcmTTxl20gwDx155ZPEGOzghcYUhpC3K_3NQQ7AX5G5kcJVYelGbBbqWazS0liPKSSNFHgByJwC_ISvXZhDKvBeC76Rk8LltPBsS659qP8sQIdihbZ40umz-Z50rGWN-hnUGi_Le8zzrzMhzZ_bN7BbHjqxsYUu8b3iKu8IfslMmAHHkWb2_5aTMGSMPyBcW1BBp2bo"/>
+</div>
+</div>
+</div>
+<div class="timeline-card glass-card rounded-[2rem] overflow-hidden border-primary/30 relative">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent"></div>
+<div class="grid md:grid-cols-[0.9fr_1.1fr] items-stretch">
+<div class="relative min-h-[260px] md:min-h-full order-2 md:order-1">
+<img class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZudpwxSUL-u1UjmGdS5M3oHxeBkA9LxVEKnsYSCFcBDyKBneUYbydv_OeFrTR2Pm4vmWcKXgRcWLuJoJDS1vBwIpWAnrxJQDRtmTY6FWe1W7fOd89DujUgPQ7iiVy2XRGOVEtgo1giHte4hDh22qhrKwlWRj9uBIqUsVdvMYy6G6VqcsDEPJ26Ez_ixX2vWomsUVvnPPRHfZdIvTQRAfxe_kejjxixRDlhqsO20r34CPK28vMDus22bgt6BqIrDNpOJA_F9yp-tc"/>
+</div>
+<div class="p-8 md:p-10 relative order-1 md:order-2">
+<div class="day-badge inline-flex px-4 py-1 rounded-full bg-primary text-black font-label-md uppercase tracking-widest mb-6">Day 2 • July 18</div>
+<h3 class="font-headline-md text-white mb-6 text-2xl md:text-3xl">Dining, Performances &amp; the Grand Formal Finale</h3>
+<div class="space-y-4 text-left">
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">11:00 AM</p>
+<p class="text-white text-lg mt-1">Entry and formal start of the day</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">12:00 PM – 12:30 PM</p>
+<p class="text-white text-lg mt-1">Jamming session 1</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">12:30 PM – 1:30 PM</p>
+<p class="text-white text-lg mt-1">Jamming session 2</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">1:30 PM – 2:10 PM</p>
+<p class="text-white text-lg mt-1">Dinner and dessert</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">2:10 PM – 3:10 PM</p>
+<p class="text-white text-lg mt-1">Qawwali performance</p>
+</div>
+<div class="timeline-item rounded-2xl border border-primary/20 bg-black/20 p-4">
+<p class="text-primary font-semibold text-sm uppercase tracking-[0.25em]">3:10 PM – 4:00 PM</p>
+<p class="text-white text-lg mt-1">DJ set, gorilla performance, and the formal finale</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Artists Section -->
+<section id="artists" class="reveal reveal-up py-32 px-gutter bg-secondary/10">
+<div class="max-w-container-max mx-auto glass-card p-16 rounded-2xl text-center border border-primary/20">
+<div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+<span class="material-symbols-outlined text-primary text-5xl">music_note</span>
+</div>
+<h2 class="section-title font-headline-lg text-white mb-4">Artists Revealing Soon</h2>
+<p class="font-body-lg text-body-lg text-on-surface/70 max-w-xl mx-auto mb-8">We're curating an exceptional lineup for the SST Farewell. Artists will be revealed one by one as we approach the event date.</p>
+<div class="mt-8 flex flex-wrap justify-center gap-4">
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Jamming Artist 1</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Jamming Artist 2</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Qawwal</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">DJ</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Mascot</span>
+</div>
+</div>
+</section>
+<!-- Gallery Section -->
+<section id="gallery" class="reveal reveal-up py-32 px-gutter max-w-container-max mx-auto">
+<div class="glass-card p-16 rounded-2xl text-center border border-primary/20">
+<div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+<span class="material-symbols-outlined text-primary text-5xl">photo_library</span>
+</div>
+<h2 class="section-title font-headline-lg text-white mb-4">Gallery Coming Soon</h2>
+<p class="font-body-lg text-body-lg text-on-surface/70 max-w-xl mx-auto mb-8">We're capturing all the magical moments from the SST Farewell. Photos, videos, and drone footage will be uploaded here after the event.</p>
+<div class="mt-8 flex justify-center gap-4">
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Photos</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Videos</span>
+<span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Drone Shots</span>
+</div>
+</div>
+</section>
+<!-- Ticket CTA -->
+<section id="tickets" class="reveal reveal-up py-32 px-gutter">
+<div class="max-w-container-max mx-auto glass-card rounded-[3rem] p-12 md:p-20 text-center border-2 border-primary/40 relative overflow-hidden bg-tertiary">
+<div class="limited-badge absolute top-4 right-4 flex items-center gap-2 bg-primary text-black text-[10px] md:text-xs px-4 py-2 rounded-full font-bold uppercase tracking-[0.25em]">
+<span class="material-symbols-outlined text-base md:text-lg">event_available</span>
+<span>Limited Seats</span>
+</div>
+<h2 class="font-headline-xl text-white mb-4 text-glow-gold">Early Bird Ticket Offer</h2>
+<p class="font-body-lg text-white/70 mb-10 max-w-2xl mx-auto">Secure your place with a premium discounted rate while the offer is live. Pricing updates automatically as the offer progresses.</p>
+<div class="max-w-3xl mx-auto mb-8">
+<div class="glass-card p-8 rounded-3xl border border-primary/20 text-left">
+<div class="text-sm uppercase tracking-[0.25em] text-primary mb-3">Current Offer</div>
+<div id="price-badge" class="blink-badge inline-flex px-4 py-1 rounded-full bg-primary text-black font-label-md uppercase tracking-widest mb-4">Weekend Sale</div>
+<div id="ticket-price" class="text-5xl font-bold mb-2 text-white">PKR 3,000</div>
+<div id="ticket-original" class="text-xl text-white/50 line-through mb-4">PKR 3,600</div>
+<div id="price-note" class="text-white/70 mb-4">Reserve now to lock in the best available rate before the next update.</div>
+<div id="price-timer" class="text-sm uppercase tracking-[0.2em] text-primary">Next update in 00d 00h 00m 00s</div>
+</div>
+</div>
+<div class="max-w-2xl mx-auto">
+<div class="glass-card p-8 rounded-3xl border-2 border-primary bg-secondary/20 shadow-[0_0_40px_rgba(201,168,76,0.1)] relative">
+<ul class="text-left space-y-3 mb-8 text-white/60 max-w-md mx-auto">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Both Event Days</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Grand Dinner Entry</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Professional Photoshoot &amp; Sky Lantern Experience</li>
+</ul>
+<a href="tickets.html" class="block w-full py-4 bg-primary text-black rounded-xl font-label-md uppercase tracking-widest hover:bg-white transition-all text-center">Buy Tickets Online</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-black border-t border-primary/20 pt-20 pb-12 px-gutter">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+<div class="md:col-span-1">
+<div class="flex items-center gap-3 mb-6">
+<img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+<span class="font-headline-sm text-primary font-bold">SST Farewell</span>
+</div>
+<p class="text-white/60 mb-6">The definitive final celebration for the SST graduating classes of Fall 2022 and Spring 2023.</p>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Quick Links</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#home">Home</a></li>
+<li><a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event Schedule</a></li>
+<li><a class="hover:text-primary transition-colors" href="artists.html">Artists</a></li>
+<li><a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a></li>
+<li><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Event Info</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm">location_on</span>
+<span>UMT Lahore Campus, Lahore</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+<span>July 17th &amp; 18th, 2026</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Contact</h4>
+<ul class="space-y-4 text-white/60 text-sm">
+<li><a class="hover:text-primary transition-colors" href="tel:+923228423598">0322-8423598</a></li>
+<li><a class="hover:text-primary transition-colors" href="mailto:sst.pc@umt.edu.pk">sst.pc@umt.edu.pk</a></li>
+<li><a class="hover:text-primary transition-colors" href="https://www.instagram.com/sst_pc" target="_blank" rel="noreferrer">@sst_pc</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-white/40 text-xs">© 2026 SST Farewell — UMT Lahore. Batches F2022 &amp; S2023.</p>
+<p class="text-white/40 text-xs">If you are facing any kind of issue, contact to President: 03228423598</p>
+</div>
+</footer>
+<script>
+    // Main event countdown
+    const eventStart = new Date('2026-07-17T16:00:00');
+    const now = new Date();
+    const targetDate = eventStart > now ? eventStart : new Date(eventStart.getFullYear() + 1, eventStart.getMonth(), eventStart.getDate(), eventStart.getHours(), eventStart.getMinutes(), eventStart.getSeconds());
+
+    function updateCountdown() {
+        const currentTime = new Date().getTime();
+        const distance = targetDate - currentTime;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerText = days.toString().padStart(2, '0');
+        document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+        document.getElementById("mins").innerText = minutes.toString().padStart(2, '0');
+        document.getElementById("secs").innerText = seconds.toString().padStart(2, '0');
+    }
+
+    // Ticket pricing timeline
+    const earlyBirdEnd = new Date('2026-07-05T23:59:59');
+    const flashOfferEnd = new Date('2026-07-10T23:59:59');
+
+    function updatePricingStage() {
+        const nowTime = new Date();
+        const priceBadge = document.getElementById('price-badge');
+        const ticketPrice = document.getElementById('ticket-price');
+        const ticketOriginal = document.getElementById('ticket-original');
+        const priceNote = document.getElementById('price-note');
+        const priceTimer = document.getElementById('price-timer');
+
+        if (nowTime < earlyBirdEnd) {
+            priceBadge.innerText = 'WeekEnd Sale';
+            ticketPrice.innerText = 'PKR 3,000';
+            ticketOriginal.innerText = 'PKR 3,600';
+            priceNote.innerText = 'Stay ahead of the next price jump with this exclusive first-release rate.';
+            priceTimer.innerText = 'Early Bird ends in ' + formatTimeRemaining(earlyBirdEnd - nowTime);
+        } else if (nowTime < flashOfferEnd) {
+            priceBadge.innerText = 'Flash Deal';
+            ticketPrice.innerText = 'PKR 3,000';
+            ticketOriginal.innerText = 'PKR 3,600';
+            priceNote.innerText = 'This premium flash rate is available for the next few days only.';
+            priceTimer.innerText = 'Flash Deal ends in ' + formatTimeRemaining(flashOfferEnd - nowTime);
+        } else {
+            priceBadge.innerText = 'Standard Advance';
+            ticketPrice.innerText = 'PKR 3,100';
+            ticketOriginal.innerText = 'PKR 3,600';
+            priceNote.innerText = 'The special discounted pricing window has ended and this is the current standard advance ticket.';
+            priceTimer.innerText = 'Standard pricing is now live';
+        }
+    }
+
+    function formatTimeRemaining(distance) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        return `${days.toString().padStart(2, '0')}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+    }
+
+    setInterval(() => {
+        updateCountdown();
+        updatePricingStage();
+    }, 1000);
+    updateCountdown();
+    updatePricingStage();
+
+    // Scroll Reveal Logic
+    const reveal = () => {
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(el => {
+            const windowHeight = window.innerHeight;
+            const elementTop = el.getBoundingClientRect().top;
+            const elementVisible = 150;
+            if (elementTop < windowHeight - elementVisible) {
+                el.classList.add('active');
+            }
+        });
+    };
+    window.addEventListener('scroll', reveal);
+    window.addEventListener('load', reveal);
+</script>
+</body></html>

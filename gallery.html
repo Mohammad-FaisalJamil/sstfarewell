@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gallery | SST Farewell</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#C9A84C", // Gold
+                        "secondary": "#8B0000", // Maroon
+                        "tertiary": "#2D0909", // Deep Maroon
+                        "background": "#000000",
+                        "on-background": "#FFFFFF",
+                        "surface": "#000000",
+                        "on-surface": "#FFFFFF",
+                        "outline": "#C9A84C",
+                        "surface-container-high": "#1c1c1c",
+                        "surface-container-low": "#111111",
+                        "on-surface-variant": "#e3beb8",
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Playfair Display"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "label-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { background-color: #000000; color: #e5e2d9; position: relative; }
+        
+        #shader-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-card { background: rgba(20, 20, 15, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(201, 168, 76, 0.1); }
+        
+        .shimmer-border {
+            position: relative;
+        }
+        .shimmer-border::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid transparent;
+            border-radius: inherit;
+            background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.5), transparent) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .group:hover .shimmer-border::after {
+            opacity: 1;
+        }
+
+        .masonry-item img {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .masonry-item:hover img {
+            filter: grayscale(0%);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .masonry-grid { column-count: 1; column-gap: 24px; }
+        @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+        .masonry-item { break-inside: avoid; margin-bottom: 24px; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .filter-btn {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+        }
+        
+        /* Mobile menu styles */
+        #mobile-menu.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        
+        /* Enhanced animations */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .fade-in-scale {
+            animation: fadeInScale 0.6s ease-out forwards;
+        }
+    </style>
+<script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+            });
+            
+            // Close menu when clicking on a link
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+        }
+        
+        // Performance: Lazy load images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    });
+</script>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+    <canvas id="shader-canvas"></canvas>
+    
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-primary/20">
+        <div class="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
+            <div class="flex items-center gap-3">
+                <img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+                <span class="font-headline-md text-primary font-bold tracking-tight text-xl sm:text-2xl md:text-3xl">SST Farewell</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 font-label-md uppercase tracking-widest text-white/80">
+                <a class="hover:text-primary transition-colors" href="index.html#home">Home</a>
+                <a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event</a>
+                <a class="hover:text-primary transition-colors" href="artists.html">Artists</a>
+                <a class="text-primary border-b-2 border-primary pb-1" href="gallery.html">Gallery</a>
+                <a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a>
+            </div>
+            <div class="hidden md:block">
+                <a href="tickets.html" class="bg-primary text-black px-6 py-2 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200">
+                    Buy Tickets
+                </a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-primary focus:outline-none hover:text-white transition-colors duration-300">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-x-0 top-[73px] z-40 bg-black/95 backdrop-blur-xl border-b border-primary/10 flex flex-col items-center justify-start py-8 gap-6 font-label-md uppercase tracking-widest text-white/80 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+            <a class="hover:text-primary transition-colors text-base" href="index.html#home">Home</a>
+            <a class="hover:text-primary transition-colors text-base" href="schedule.html#schedule">Event</a>
+            <a class="hover:text-primary transition-colors text-base" href="artists.html">Artists</a>
+            <a class="hover:text-primary transition-colors text-base" href="gallery.html">Gallery</a>
+            <a class="hover:text-primary transition-colors text-base" href="tickets.html">Tickets</a>
+            <a href="tickets.html" class="bg-primary text-black px-8 py-3 rounded-full font-label-md uppercase tracking-wider hover:bg-white hover:scale-105 transition-all duration-200 mt-2">Buy Tickets</a>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <header class="pt-40 pb-20 px-margin-mobile md:px-margin-desktop text-center relative overflow-hidden">
+        <div class="inline-block mb-6">
+            <span class="bg-primary text-black px-6 py-2 rounded-full font-label-md uppercase tracking-widest text-sm font-bold">Coming Soon</span>
+        </div>
+        <h1 class="font-headline-xl text-headline-xl text-on-background mb-4 tracking-tight">Gallery</h1>
+        <p class="font-body-lg text-body-lg text-primary/80 max-w-2xl mx-auto mb-12">Memories from SST — photos, videos, and drone footage.</p>
+        
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+            <button class="filter-btn active font-label-md text-label-md uppercase tracking-widest bg-secondary text-white px-6 py-2 rounded-full border border-secondary transition-all">All</button>
+            <button class="filter-btn font-label-md text-label-md uppercase tracking-widest bg-transparent text-primary border border-primary/50 px-6 py-2 rounded-full hover:bg-primary/10 transition-all">Photos</button>
+            <button class="filter-btn font-label-md text-label-md uppercase tracking-widest bg-transparent text-primary border border-primary/50 px-6 py-2 rounded-full hover:bg-primary/10 transition-all">Videos</button>
+            <button class="filter-btn font-label-md text-label-md uppercase tracking-widest bg-transparent text-primary border border-primary/50 px-6 py-2 rounded-full hover:bg-primary/10 transition-all">Drone Shots</button>
+            <button class="filter-btn font-label-md text-label-md uppercase tracking-widest bg-transparent text-primary border border-primary/50 px-6 py-2 rounded-full hover:bg-primary/10 transition-all">Behind the Scenes</button>
+        </div>
+    </header>
+
+    <!-- Masonry Photo Grid -->
+    <section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-24">
+        <div class="glass-card p-16 rounded-2xl text-center border border-primary/20">
+            <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                <span class="material-symbols-outlined text-primary text-5xl">photo_library</span>
+            </div>
+            <h2 class="font-headline-lg text-headline-lg text-primary mb-4">Gallery Coming Soon</h2>
+            <p class="font-body-lg text-body-lg text-on-surface/70 max-w-xl mx-auto">We're capturing all the magical moments from the SST Farewell. Photos, videos, and drone footage will be uploaded here after the event.</p>
+            <div class="mt-8 flex justify-center gap-4">
+                <span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Photos</span>
+                <span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Videos</span>
+                <span class="bg-secondary text-white px-4 py-2 rounded-full text-label-md font-label-md uppercase">Drone Shots</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Upload/Share Section -->
+    <section class="pb-24 px-margin-mobile md:px-margin-desktop">
+        <div class="max-w-4xl mx-auto glass-card p-12 rounded-3xl text-center relative overflow-hidden border border-primary/30">
+            <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-primary/10 rounded-full blur-[80px]"></div>
+            <div class="absolute -top-20 -left-20 w-64 h-64 bg-secondary/20 rounded-full blur-[80px]"></div>
+            <h2 class="font-headline-lg text-headline-lg text-primary mb-6">Share Your Memories</h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Tag us on Instagram <span class="text-primary font-bold">@sst_pc</span></p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <button class="flex items-center gap-3 bg-secondary text-white px-8 py-4 rounded-full font-label-md text-label-md uppercase tracking-widest shadow-xl shadow-secondary/20 hover:scale-105 transition-all active:scale-95">
+                    <span class="material-symbols-outlined">upload_file</span>
+                    Upload Photos
+                </button>
+                <button class="flex items-center gap-3 border border-primary text-primary px-8 py-4 rounded-full font-label-md text-label-md uppercase tracking-widest hover:bg-primary/10 transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-[#25D366]">chat</span>
+                    WhatsApp Group
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-primary/20 pt-20 pb-12 px-gutter">
+        <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="md:col-span-1">
+                <div class="flex items-center gap-3 mb-6">
+                    <img alt="SST Farewell Logo" class="h-14 md:h-16 w-auto brightness-110" src="logo.png"/>
+                    <span class="font-headline-sm text-primary font-bold">SST Farewell</span>
+                </div>
+                <p class="text-white/60 mb-6">The definitive final celebration for the SST graduating classes of Fall 2022 and Spring 2023.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Quick Links</h4>
+                <ul class="space-y-4 text-white/60 text-sm">
+                    <li><a class="hover:text-primary transition-colors" href="index.html#home">Home</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="schedule.html#schedule">Event Schedule</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="artists.html">Artists</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="gallery.html">Gallery</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="tickets.html">Tickets</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Event Info</h4>
+                <ul class="space-y-4 text-white/60 text-sm">
+                    <li class="flex gap-3">
+                        <span class="material-symbols-outlined text-primary text-sm">location_on</span>
+                        <span>UMT Lahore Campus, Lahore</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="material-symbols-outlined text-primary text-sm">calendar_month</span>
+                        <span>July 17th &amp; 18th, 2026</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-widest text-sm">Contact</h4>
+                <ul class="space-y-4 text-white/60 text-sm">
+                    <li><a class="hover:text-primary transition-colors" href="tel:+923228423598">0322-8423598</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="mailto:sst.pc@umt.edu.pk">sst.pc@umt.edu.pk</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="https://www.instagram.com/sst_pc" target="_blank" rel="noreferrer">@sst_pc</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-container-max mx-auto pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-white/40 text-xs">© 2026 SST Farewell — UMT Lahore. Batches F2022 &amp; S2023.</p>
+            <p class="text-white/40 text-xs">If you are facing any kind of issue, contact to President: 03228423598</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <button id="lightbox-close" class="absolute top-6 right-6 text-white hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <button id="lightbox-prev" class="absolute left-6 top-1/2 -translate-y-1/2 text-white hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-5xl">chevron_left</span>
+        </button>
+        <button id="lightbox-next" class="absolute right-6 top-1/2 -translate-y-1/2 text-white hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-5xl">chevron_right</span>
+        </button>
+        <div class="max-w-4xl max-h-[80vh] px-4 flex flex-col items-center">
+            <img id="lightbox-img" class="max-w-full max-h-[70vh] rounded-xl object-contain border border-primary/20 shadow-2xl" src="" alt="Zoomed view" />
+            <p id="lightbox-caption" class="text-primary font-headline-md mt-4 text-center"></p>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <button id="video-close" class="absolute top-6 right-6 text-white hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <div class="w-full max-w-4xl px-4">
+            <div class="relative aspect-video rounded-xl overflow-hidden border border-primary/20 shadow-2xl bg-black">
+                <video id="modal-video-player" class="w-full h-full" controls>
+                    <source id="video-source" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <p id="video-caption" class="text-primary font-headline-md mt-4 text-center"></p>
+        </div>
+    </div>
+
+    <!-- Shader Logic -->
+    <script>
+        const canvas = document.getElementById('shader-canvas');
+        const gl = canvas.getContext('webgl');
+
+        if (gl) {
+            const vertexShaderSource = `
+                attribute vec2 position;
+                varying vec2 v_texCoord;
+                void main() {
+                    v_texCoord = position * 0.5 + 0.5;
+                    v_texCoord.y = 1.0 - v_texCoord.y;
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision highp float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+                varying vec2 v_texCoord;
+
+                void main() {
+                    vec2 uv = v_texCoord;
+                    
+                    // Deep maroon and black flowing effect
+                    float noise = sin(uv.x * 3.0 + u_time * 0.5) * cos(uv.y * 2.0 - u_time * 0.3);
+                    noise += sin(uv.y * 5.0 + u_time * 0.8) * 0.5;
+                    
+                    vec3 color1 = vec3(0.1, 0.02, 0.02); // Deepest Maroon
+                    vec3 color2 = vec3(0.0, 0.0, 0.0);    // Black
+                    vec3 accent = vec3(0.3, 0.05, 0.05); // Brighter Maroon highlight
+                    
+                    vec3 finalColor = mix(color2, color1, noise * 0.5 + 0.5);
+                    finalColor = mix(finalColor, accent, pow(max(0.0, noise), 3.0));
+                    
+                    // Suble "gold dust" shimmer
+                    float shimmer = step(0.998, fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453 + u_time * 0.1));
+                    finalColor += shimmer * vec3(0.79, 0.66, 0.3); 
+                    
+                    gl_FragColor = vec4(finalColor, 1.0);
+                }
+            `;
+
+            function createShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                return shader;
+            }
+
+            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            gl.useProgram(program);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                -1.0, -1.0, 1.0, -1.0, -1.0, 1.0,
+                -1.0, 1.0, 1.0, -1.0, 1.0, 1.0
+            ]), gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const timeLocation = gl.getUniformLocation(program, 'u_time');
+            const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+
+            function render(time) {
+                time *= 0.001;
+                
+                if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    gl.viewport(0, 0, canvas.width, canvas.height);
+                }
+
+                gl.uniform1f(timeLocation, time);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // Filter buttons behavior
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const masonryItems = document.querySelectorAll('.masonry-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-secondary', 'text-white');
+                    b.classList.add('bg-transparent', 'text-primary', 'border-primary/50');
+                });
+                btn.classList.add('active', 'bg-secondary', 'text-white');
+                btn.classList.remove('bg-transparent', 'text-primary', 'border-primary/50');
+
+                const filterValue = btn.textContent.trim().toLowerCase();
+
+                masonryItems.forEach(item => {
+                    const category = item.getAttribute('data-category');
+                    if (filterValue === 'all') {
+                        item.style.display = 'block';
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    } else if (filterValue === 'photos' && category === 'photos') {
+                        item.style.display = 'block';
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    } else if (filterValue === 'drone shots' && category === 'drone-shots') {
+                        item.style.display = 'block';
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    } else if (filterValue === 'behind the scenes' && category === 'behind-the-scenes') {
+                        item.style.display = 'block';
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    } else if (filterValue === 'videos' && category === 'videos') {
+                        item.style.display = 'block';
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+        
+        let currentImageIndex = 0;
+        let galleryImages = Array.from(document.querySelectorAll('.masonry-item img'));
+        
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const img = galleryImages[index];
+            lightboxImg.src = img.src;
+            lightboxCaption.textContent = img.alt;
+            lightbox.classList.remove('opacity-0', 'pointer-events-none');
+        }
+        
+        function closeLightbox() {
+            lightbox.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => { lightboxImg.src = ''; }, 300);
+        }
+        
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            let attempts = 0;
+            while (galleryImages[currentImageIndex].closest('.masonry-item').style.display === 'none' && attempts < galleryImages.length) {
+                currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                attempts++;
+            }
+            openLightbox(currentImageIndex);
+        }
+        
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            let attempts = 0;
+            while (galleryImages[currentImageIndex].closest('.masonry-item').style.display === 'none' && attempts < galleryImages.length) {
+                currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+                attempts++;
+            }
+            openLightbox(currentImageIndex);
+        }
+        
+        function registerLightboxTriggers() {
+            document.querySelectorAll('.masonry-item').forEach((item) => {
+                item.style.cursor = 'pointer';
+                // Remove existing event listener if any (by cloning)
+                const newItem = item.cloneNode(true);
+                item.parentNode.replaceChild(newItem, item);
+                
+                newItem.addEventListener('click', (e) => {
+                    // Update galleryImages list in case elements were loaded dynamically
+                    galleryImages = Array.from(document.querySelectorAll('.masonry-item img'));
+                    const img = newItem.querySelector('img');
+                    const imgIndex = galleryImages.indexOf(img);
+                    if (imgIndex !== -1) {
+                        openLightbox(imgIndex);
+                    }
+                });
+            });
+        }
+        
+        registerLightboxTriggers();
+        
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrevImage(); });
+        lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); showNextImage(); });
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('pointer-events-none')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') showNextImage();
+                if (e.key === 'ArrowLeft') showPrevImage();
+            }
+        });
+
+        // Video Modal Logic
+        const videoModal = document.getElementById('video-modal');
+        const videoPlayer = document.getElementById('modal-video-player');
+        const videoSource = document.getElementById('video-source');
+        const videoCaption = document.getElementById('video-caption');
+        const videoClose = document.getElementById('video-close');
+        
+        const videoData = {
+            lantern: {
+                url: 'https://assets.mixkit.co/videos/preview/mixkit-flying-sky-lanterns-at-night-42407-large.mp4',
+                title: 'Sky Lantern Night — Highlights'
+            },
+            dj: {
+                url: 'https://assets.mixkit.co/videos/preview/mixkit-dj-playing-music-at-a-club-42287-large.mp4',
+                title: 'DJ Night Highlights'
+            },
+            drone: {
+                url: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-city-at-night-43093-large.mp4',
+                title: 'Aerial View — Drone Footage'
+            }
+        };
+        
+        function openVideoModal(key) {
+            const data = videoData[key];
+            if (data) {
+                videoSource.src = data.url;
+                videoPlayer.load();
+                videoCaption.textContent = data.title;
+                videoModal.classList.remove('opacity-0', 'pointer-events-none');
+                videoPlayer.play();
+            }
+        }
+        
+        function closeVideoModal() {
+            videoPlayer.pause();
+            videoModal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => { videoSource.src = ''; }, 300);
+        }
+        
+        document.querySelectorAll('[data-video]').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const videoKey = card.getAttribute('data-video');
+                openVideoModal(videoKey);
+            });
+        });
+        
+        videoClose.addEventListener('click', closeVideoModal);
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                closeVideoModal();
+            }
+        });
+
+        // Load More Logic
+        const loadMoreBtn = document.querySelector('button.border-2.border-primary');
+        const masonryGrid = document.querySelector('.masonry-grid');
+        
+        const extraImages = [
+            {
+                src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCAPMWh6Uz7jGspl67JR8qxAr3BqFiMu9sFtabVEvB6MRZ1O6-cNxs4pje63JiYE85QsuNPVt65NE1J6bWHnvfF60BWVEW77Y8-FsLtSEsjLAjtXKl00Mreu2oyIgGxylfE-vCyKAluZyMGrCCCoNraopYZ5K7Nv5LZ02hjWKNEVfjVr21Pds7R3FgH3da5JTR0dK_mOC5v8QcxM1K0McE8NUXfPr5ZXskv2llVQ0O-fMrb5I3NJp01c38kTFcqVnBg_hRBOwBrwTE',
+                alt: 'Gathering Moment',
+                day: 'Day 1',
+                category: 'photos'
+            },
+            {
+                src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuACRzOtLFduk1ElS-Z9iY-S02j0eT3s2s0j56cZr1XEjn-l2E7yQSY3ZD-B2o5c0Za94qCVZmyz9OK6-bwJl1KgLMV_7tjvMIVeoRKDG3b1C6_iaDppYHPi9RuC_WsUU9-phvvMeSO5SKIc_HUQc2H9LpCeD11dA07srw4o7prj2Uxi7Gwq6PUEzui73wMl3dUQlVi6-el9XzCBGMbMZE_j0LNyhFKfhzkIoWcO9FE2DF9ZY0ujV5CDnX8VxCJaK6xx2xG4O_TbHUQ',
+                alt: 'Opening Ceremony',
+                day: 'Day 1',
+                category: 'behind-the-scenes'
+            },
+            {
+                src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuABBllsTd2GIU0sqtzx-NSv4jyLrKWDsnfQHg1-fZEyGNBMF1EgZvzWD-tRFlFnPjY6xkLoqwc0CcarijRnebwoofLpvY9yya1soFlL-itfx-V2cisctPB_LGUF-AMpWhgczUVhLZN_VyZSF3NayxyR-uPFAMeD0segg4ymavHp9KAnpQiO_4PWU0ZdSuMpouX2XzMkzvlLjT5pi0mmSMr6UlUxZmCuly1lOoBWdx-ouZ8K2r5MnhcVpYEZRVo2Z-SajSETWBSbzKM',
+                alt: 'DJ Music Night',
+                day: 'Day 2',
+                category: 'videos'
+            },
+            {
+                src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD0D-gLoWfRG1FurBzwL_A9y2Q0n1zZ3p683085HAx07qxULpGWUh1occUZamgGRCsqXXPZD3li_ib7VZpe7subeZKVcMZNciW_5BM-eXd9PhF19-Cc2wzr_aDb27vF4Vu2fzaa4rIW4RIPt56BWxyZ8jjvqZhC9a5-o6lPAMrqYSCbxjjXJ3T2_gC4ZoR0BQ1ZO_bKAhCG_Tj05SD2mGjXuk1W0SzY0xsveqhO5ShYYl8_scXrK1utQXYWTXOXhjZitOgoQW9_Bv4',
+                alt: 'Drone Fireworks',
+                day: 'Day 2',
+                category: 'drone-shots'
+            },
+            {
+                src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQe80Xe_GpjaAJ1NdJURhMgrK72d9IDiLip8q5k_YlTVFL3iMC946IZ4tPZGoD567mmgjDqdCYaHcQP-GauuHGltyrr4-6LdY3LIOgYuzIOB8wMZGgYI38Wrmu0i1wegLM_p41jpTVYiKes60pcgKLzLqsZd0CQRXFoWSvxf4dJX1lICIWb5lbGycRMZ0ozYIlDKG5uzgRCizSa56bW2xngvdVU1DhUvFDyxniYQyGsD5JTrKVlZtjbqMXHcYZRPi6YVdqQy_gbd8',
+                alt: 'Graduates Smiling',
+                day: 'Day 2',
+                category: 'photos'
+            }
+        ];
+        
+        loadMoreBtn.addEventListener('click', () => {
+            loadMoreBtn.textContent = 'Loading...';
+            loadMoreBtn.disabled = true;
+            
+            setTimeout(() => {
+                extraImages.forEach(imgData => {
+                    const item = document.createElement('div');
+                    item.className = 'masonry-item relative group overflow-hidden rounded-xl border border-primary/10 shadow-2xl transition-all hover:translate-y-[-4px]';
+                    item.setAttribute('data-category', imgData.category);
+                    
+                    const activeFilterBtn = document.querySelector('.filter-btn.active');
+                    const currentFilter = activeFilterBtn.textContent.trim().toLowerCase();
+                    if (currentFilter !== 'all') {
+                        if (currentFilter === 'photos' && imgData.category !== 'photos') item.style.display = 'none';
+                        else if (currentFilter === 'drone shots' && imgData.category !== 'drone-shots') item.style.display = 'none';
+                        else if (currentFilter === 'behind the scenes' && imgData.category !== 'behind-the-scenes') item.style.display = 'none';
+                        else if (currentFilter === 'videos' && imgData.category !== 'videos') item.style.display = 'none';
+                    }
+                    
+                    item.innerHTML = `
+                        <div class="shimmer-border absolute inset-0 z-20 pointer-events-none"></div>
+                        <img alt="${imgData.alt}" class="w-full object-cover transition-transform duration-700 group-hover:scale-110" src="${imgData.src}"/>
+                        <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
+                            <span class="material-symbols-outlined text-primary text-4xl">zoom_in</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 z-30">
+                            <span class="bg-secondary text-white px-3 py-1 rounded-full text-label-md font-label-md uppercase">${imgData.day}</span>
+                        </div>
+                    `;
+                    
+                    masonryGrid.appendChild(item);
+                });
+                
+                // Re-register click triggers for lightbox to include newly added images
+                registerLightboxTriggers();
+                
+                // Hide button after loading all
+                loadMoreBtn.style.display = 'none';
+            }, 800);
+        });
+    </script>
+</body>
+</html>

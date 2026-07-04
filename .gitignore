@@ -1,0 +1,9 @@
+# Ignore external dependencies
+node_modules/
+
+# Hide secure backend keys from public repositories
+js/config.js
+
+# Ignore system configuration and local logs
+.DS_Store
+npm-debug.log*
