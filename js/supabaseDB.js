@@ -69,34 +69,53 @@ export async function saveRegistration(registrationData) {
 }
 
 /**
- * Scan database records using Student ID to securely check workflow status
+ * Scan database records using Student ID to securely check workflow status.
+ * Looks up which registration the student belongs to, then returns the FULL
+ * registration record along with every attendee in that group (not just the
+ * one that was searched for), with field names normalized to camelCase so
+ * they match what the UI expects.
  */
 export async function checkRegistrationStatus(studentId) {
     try {
-        const { data, error } = await supabase
+        const normalizedId = studentId.toUpperCase().trim();
+
+        // Step 1: find which registration this student belongs to
+        const { data: attendeeRow, error: attendeeError } = await supabase
             .from('attendees')
-            .select(`
-                student_id,
-                name,
-                registrations (
-                    id,
-                    amount,
-                    status,
-                    ticket_type
-                )
-            `)
-            .eq('student_id', studentId.toUpperCase().trim());
+            .select('registration_id')
+            .eq('student_id', normalizedId)
+            .maybeSingle();
 
-        if (error) throw error;
-        if (!data || data.length === 0) return null;
+        if (attendeeError) throw attendeeError;
+        if (!attendeeRow) return null; // no matching student found
 
-        const firstMatch = data[0];
+        // Step 2: fetch the full registration, with ALL of its attendees
+        const { data: registration, error: regError } = await supabase
+            .from('registrations')
+            .select('*, attendees(*)')
+            .eq('id', attendeeRow.registration_id)
+            .maybeSingle();
+
+        if (regError) throw regError;
+        if (!registration) return null;
+
         return {
-            id: firstMatch.registrations.id,
-            status: firstMatch.registrations.status,
-            amount: firstMatch.registrations.amount,
-            ticketType: firstMatch.registrations.ticket_type,
-            attendees: data
+            id: registration.id,
+            status: registration.status,
+            amount: Number(registration.amount) || 0,
+            ticketType: registration.ticket_type,
+            rejectionReason: registration.admin_comment,
+            attendees: (registration.attendees || []).map(a => ({
+                name: a.name,
+                studentId: a.student_id,
+                batch: a.batch,
+                program: a.program,
+                email: a.email,
+                phone: a.phone,
+                gender: a.gender,
+                notes: a.notes,
+                emergencyContact: a.emergency_contact
+            }))
         };
     } catch (error) {
         console.error('Database lookup operation critical failure:', error);
