@@ -642,7 +642,7 @@ animate();
 
     // Ticket pricing timeline
     const earlyBirdEnd = new Date('2026-07-05T23:59:59');
-    const flashOfferEnd = new Date('2026-07-10T23:59:59');
+    const flashOfferEnd = new Date('2026-07-08T23:59:59');
 
     function updatePricingStage() {
         const nowTime = new Date();
@@ -653,20 +653,20 @@ animate();
         const priceTimer = document.getElementById('price-timer');
 
         if (nowTime < earlyBirdEnd) {
-            priceBadge.innerText = 'WeekEnd Sale';
-            ticketPrice.innerText = 'PKR 3,000';
+            priceBadge.innerText = 'Extended Sale ';
+            ticketPrice.innerText = 'PKR 3,200';
             ticketOriginal.innerText = 'PKR 3,600';
             priceNote.innerText = 'Stay ahead of the next price jump with this exclusive first-release rate.';
             priceTimer.innerText = 'Early Bird ends in ' + formatTimeRemaining(earlyBirdEnd - nowTime);
         } else if (nowTime < flashOfferEnd) {
             priceBadge.innerText = 'Flash Deal';
-            ticketPrice.innerText = 'PKR 3,000';
+            ticketPrice.innerText = 'PKR 3,200';
             ticketOriginal.innerText = 'PKR 3,600';
             priceNote.innerText = 'This premium flash rate is available for the next few days only.';
             priceTimer.innerText = 'Flash Deal ends in ' + formatTimeRemaining(flashOfferEnd - nowTime);
         } else {
             priceBadge.innerText = 'Standard Advance';
-            ticketPrice.innerText = 'PKR 3,100';
+            ticketPrice.innerText = 'PKR 3,200';
             ticketOriginal.innerText = 'PKR 3,600';
             priceNote.innerText = 'The special discounted pricing window has ended and this is the current standard advance ticket.';
             priceTimer.innerText = 'Standard pricing is now live';
