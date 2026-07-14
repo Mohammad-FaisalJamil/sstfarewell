@@ -30,7 +30,8 @@ export async function saveRegistration(registrationData) {
                 ticket_type: registrationData.ticketType || 'regular',
                 quantity: parseInt(registrationData.quantity) || 1,
                 amount: parseFloat(registrationData.amount) || 0,
-                payment_proof_url: paymentProofUrl
+                payment_proof_url: paymentProofUrl,
+                status: 'pending'
             }])
             .select()
             .single();
