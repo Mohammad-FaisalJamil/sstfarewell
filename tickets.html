@@ -329,27 +329,14 @@
                         <div class="font-headline-xl text-primary text-5xl mb-2" id="current-price">PKR 2,950</div>
                         <div class="text-white/50 line-through mb-6">PKR 3,600</div>
                         
-                        <!-- Quantity Selector -->
-                        <div class="mb-8">
-                            <label class="font-label-md text-white/70 mb-3 block text-center">Select Quantity</label>
-                            <div class="flex items-center justify-center gap-6">
-                                <button class="w-12 h-12 rounded-full border border-primary flex items-center justify-center text-primary hover:bg-primary hover:text-black transition-all duration-300" onclick="updateQty(-1)">
-                                    <span class="material-symbols-outlined">-</span>
-                                </button>
-                                <span class="font-headline-md text-white w-12 text-center text-2xl" id="quantity">1</span>
-                                <button class="w-12 h-12 rounded-full border bord2er-primary flex items-center justify-center text-primary hover:bg-primary hover:text-black transition-all duration-300" onclick="updateQty(1)">
-                                    <span class="material-symbols-outlined">+</span>
-                                </button>
-                            </div>
+                        <!-- WhatsApp Only Notice -->
+                        <div class="mb-8 bg-secondary/10 border border-secondary/40 rounded-xl p-5 text-center">
+                            <p class="text-primary font-bold uppercase tracking-widest text-sm mb-2">Seats Almost Full</p>
+                            <p class="text-white/80 text-sm leading-relaxed">Online registration is now closed. Only <span class="text-primary font-semibold">WhatsApp registration</span> is being accepted for the remaining seats, at the same price.</p>
+                            <p class="text-white mt-3 font-semibold">Contact <a href="https://wa.me/923228423598" class="text-primary underline" target="_blank">0322 8423598</a> on WhatsApp to register</p>
                         </div>
-                        
-                        <!-- Subtotal -->
-                        <div class="flex justify-between items-center mb-6 text-white/70 border-t border-primary/20 pt-4">
-                            <span>Subtotal</span>
-                            <span class="font-headline-md text-primary text-2xl" id="subtotal">PKR 2,950</span>
-                        </div>
-                        
-                        <button id="select-ticket-btn" class="w-full py-4 bg-primary text-black rounded-xl font-label-md uppercase tracking-widest hover:bg-white transition-all" onclick="goToStep(2)">Select Ticket</button>
+
+                        <button id="select-ticket-btn" class="w-full py-4 bg-primary/30 text-white/50 rounded-xl font-label-md uppercase tracking-widest cursor-not-allowed" disabled>Registration Closed &mdash; WhatsApp Only</button>
                     </div>
                 </div>
             </div>
